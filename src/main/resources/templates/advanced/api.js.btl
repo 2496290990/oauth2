@@ -1,0 +1,32 @@
+import request from '@/utils/request'
+import base from '@/utils/api'
+
+export function ${context.bizEnName}List (query) {
+  return request({
+    url: base + '/rest/common/basematerial/${context.reqUrl}',
+    method: 'get',
+    params: query
+  })
+}
+export function ${context.bizEnName}Add (query) {
+  return request({
+    url: base + '/rest/xx/xx/${context.reqUrl}',
+    method: 'post',
+    //data: query
+    params: query
+  })
+}
+export function ${context.bizEnName}Update (query) {
+  return request({
+    url: base + '/rest/xx/xx/${context.reqUrl}',
+    method: 'patch',
+    params: query
+  })
+}
+export function ${context.bizEnName}Del (query) {
+  return request({
+    url: base + '/rest/xx/xx/${context.reqUrl}',
+    method: 'delete',
+    params: query
+  })
+}

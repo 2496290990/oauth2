@@ -1,0 +1,6 @@
+host=smtp.qq.com
+port=465
+from=2496290990@qq.com
+user=2496290990
+pass=mqyxtwbsffzqeaae
+sslEnable=true

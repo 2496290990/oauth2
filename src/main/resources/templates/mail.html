@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+
+        .container {
+            text-align: center;
+        }
+
+        .header {
+            font-size: 30px;
+            font-weight: bold;
+            font-family: 黑体;
+        }
+
+        .tips {
+            font-size: 16px;
+            font-family: 宋体;
+            color: darkgrey;
+        }
+
+        .code, .company {
+            font-weight: bold;
+            font-size: 18px;
+            font-family: 黑体;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <p>校友邦注册邮件</p>
+        <hr>
+    </div>
+    <div class="mid">
+        <div>
+            <p>
+                欢迎注册<span class="company" th:text="${company}"/>。您的验证码是：<span class="code" th:text="${code}"/>
+                有效期为3分钟, 请立即验证。
+            </p>
+        </div>
+        <div class="tips">
+            <p>( 如您已成功注册，请忽略此封邮件, 请勿直接回复本邮件 )</p>
+            <br>
+            <hr>
+        </div>
+        <div>
+            <p>
+                Greetings from <span class="company" th:text="${companyEn}"/>, your vertification code is: <span
+                    class="code" th:text="${code}"/>, it will expire
+                in 3 minutes,please verify immediately.
+            </p>
+        </div>
+    </div>
+
+</div>
+<p>
+
+
+</p>
+</body>
+</html>
