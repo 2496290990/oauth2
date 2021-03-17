@@ -1,0 +1,104 @@
+package ${controller.packageName};
+
+<% for(import in controller.imports!){ %>
+import ${import};
+<% } %>
+
+/**
+ * ${context.requestMapping}控制器
+ *
+ * @author eleven
+ * @Date ${tool.currentTime()}
+ * @apiNote
+ */
+@RestController
+@RequestMapping("/${context.requestMapping}")
+public class ${context.bizEnBigName}Controller  {
+
+    @Autowired
+    private IUserService userService;
+
+    @Autowired
+    private ${context.entityName}Service ${context.bizEnName}Service;
+
+
+    /**
+     * 分页查询
+     * @param request
+     * @param start   起始页
+     * @param limit   每页显示多少条  默认10 条
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<?> list(HttpServletRequest request,
+                                  @RequestParam(value = "start", required = false, defaultValue = "0") int start,
+                                  @RequestParam(value = "limit", required = false, defaultValue = "10") int limit) {
+        //获取用户信息
+        User user = userService.getUserInfo(request);
+        //条件查询
+        EntityWrapper<${context.entityName}> entityWrapper = new EntityWrapper<${context.entityName}>();
+        //执行查询方法
+        Page<${context.entityName}> pageVO =  ${context.bizEnName}Service.selectPage(new Page<${context.entityName}>(start, limit), entityWrapper);
+        return new ResponseEntity<Object>(pageVO, HttpStatus.OK);
+    }
+
+
+    /**
+     * 通过ID 删除
+     * @param request
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.DELETE)
+    public ResponseEntity<?> deleteById(HttpServletRequest request, @PathVariable("id") Integer id) {
+        //获取用户信息
+        User user = userService.getUserInfo(request);
+        //根据具体情况 判断 是否需要 进行数据返回， 默认不返回数据
+        ${context.bizEnName}Service.deleteById(id);
+        return new ResponseEntity<Object>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * 通过 ID 查询 单条 信息
+     *
+     * @param request
+     * @param id      编号
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.GET)
+    public ResponseEntity<?> findById(HttpServletRequest request, @PathVariable("id") Integer id) {
+        //获取用户信息
+        User user = userService.getUserInfo(request);
+        ${context.entityName} ${context.bizEnName}= ${context.bizEnName}Service.selectById(id);
+        return new ResponseEntity<${context.entityName}>(${context.bizEnName}, HttpStatus.OK);
+    }
+
+    /** 修改操作
+     * @param request
+     * @param ${context.bizEnName}
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.PATCH)
+    public ResponseEntity<?> update(HttpServletRequest request, @RequestBody ${context.entityName} ${context.bizEnName}) {
+        //获取用户信息
+        User user = userService.getUserInfo(request);
+        ${context.bizEnName}Service.insertOrUpdate(${context.bizEnName});
+        //此处需要手工处理 返回需要将修改后的数据返回
+        return new ResponseEntity<${context.entityName}>(HttpStatus.CREATED);
+    }
+
+    /**
+     * 添加
+     * @param request
+     * @param ${context.bizEnName}
+     * @return
+     */
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    public ResponseEntity<?> add(HttpServletRequest request, @RequestBody ${context.entityName} ${context.bizEnName}) {
+        //获取用户信息
+        User user = userService.getUserInfo(request);
+        ${context.bizEnName}Service.insertOrUpdate(${context.bizEnName});
+        //此处需要手工处理 返回需要将修改后的数据返回
+        return new ResponseEntity<${context.entityName}>(HttpStatus.CREATED);
+    }
+}

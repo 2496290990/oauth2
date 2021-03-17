@@ -1,0 +1,20 @@
+spring:
+  redis:
+    host: localhost
+  datasource:
+    url: jdbc:mysql://localhost:3306/zs_im?serverTimezone=UTC
+    username: root
+    password: dream
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  servlet:
+    multipart:
+      max-request-size: 100MB
+      max-file-size: 100MB
+
+server:
+  port: 8099
+mybatis-plus:
+  type-aliases-package: com.eleven
+  mapper-locations: classpath:mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
