@@ -50,6 +50,7 @@ public class CircleOfFriendServiceImpl extends ServiceImpl<CircleOfFriendMapper,
     public Result insertNew(CircleOfFriend circleOfFriend, List<MultipartFile> files) throws IOException {
         SnowFlake snowFlake = SnowFlake.getSnowFlake();
         circleOfFriend.setId(snowFlake.nextId());
+        circleOfFriend.setUtterer(SecurityUtils.getUserInfo().getAccount());
         friendMapper.insert(circleOfFriend);
         List<CircleOss> ossList = new ArrayList<>();
         CircleOss oss = new CircleOss();

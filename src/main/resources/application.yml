@@ -24,3 +24,11 @@ mybatis-plus:
 oauth2:
   clientId: admin
   secret: elevenZ
+ease:
+  clientId: YXA6zl0MsW5YTQ6JFVFGUTFgeA
+  clientSecret: YXA6fN-mBR5MvYCtlqVwLOfyjwgDP5Q
+  appKey: 1102210107065543#alumni
+  orgName: 1102210107065543
+  appName: alumni
+  restApi: https://a1.easemob.com
+  tokenUrl: https://a1.easemob.com/1102210107065543/alumni

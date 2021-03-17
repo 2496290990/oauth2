@@ -1,6 +1,7 @@
 package com.eleven.service.impl;
 
 import cn.hutool.core.util.StrUtil;
+import com.eleven.common.EasemobRegResult;
 import com.eleven.common.Email;
 import com.eleven.common.Result;
 import com.eleven.common.ResultFactory;
@@ -9,6 +10,7 @@ import com.eleven.entity.VerifyLog;
 import com.eleven.mapper.LoginUserMapper;
 import com.eleven.mapper.VerifyLogMapper;
 import com.eleven.service.RegisterService;
+import com.eleven.util.EasemobUtil;
 import com.eleven.util.EmailUtil;
 import com.eleven.util.SnowFlake;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -43,6 +47,8 @@ public class RegisterServiceImpl implements RegisterService {
     private final LoginUserMapper loginUserMapper;
 
     private final BCryptPasswordEncoder passwordEncoder;
+
+    private final EasemobUtil easemobUtil;
 
     @Override
     public Result sendEmailCode(String emailAddress) {
@@ -89,6 +95,7 @@ public class RegisterServiceImpl implements RegisterService {
 
 
     @Override
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
     public Result saveNewLoginUser(LoginUser loginUser) {
         List<String> accountList = loginUserMapper.queryAllAccount();
         String account = "";
@@ -103,6 +110,10 @@ public class RegisterServiceImpl implements RegisterService {
         //password = password + salt;
         loginUser.setPassword(passwordEncoder.encode(password));
         int effectRow = loginUserMapper.insert(loginUser);
+        //==================注册环信用户============
+        EasemobRegResult easemobRegResult = easemobUtil.openRegister(loginUser);
+        List<EasemobRegResult.Entities> entities = easemobRegResult.getEntities();
+        // TODO: 2021/3/17 插入信息 
         return effectRow != 0 ?
                 ResultFactory.success("注册成功") :
                 ResultFactory.failed("注册失败，请联系管理员");

@@ -1,5 +1,6 @@
 package com.eleven.config;
 
+import com.eleven.util.EasemobUtil;
 import com.eleven.util.ImgUploadUtil;
 import com.eleven.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public SnowFlake snowFlake(){
         return SnowFlake.getSnowFlake();
     }
+
+    @Bean
+    public EasemobUtil easemobUtil(){return new EasemobUtil();}
 
 }

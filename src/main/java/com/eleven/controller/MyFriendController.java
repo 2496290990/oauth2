@@ -2,12 +2,11 @@ package com.eleven.controller;
 
 
 import com.eleven.common.Result;
+import com.eleven.entity.MyFriend;
 import com.eleven.service.MyFriendService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -28,6 +27,11 @@ public class MyFriendController {
     @GetMapping("/query")
     public Result queryMyFriend(){
         return myFriendService.queryMyFriend();
+    }
+
+    @PostMapping("/addFriend")
+    public Result addFriend(@RequestBody MyFriend myFriend){
+        return myFriendService.addFriend(myFriend);
     }
 }
 

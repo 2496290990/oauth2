@@ -5,6 +5,26 @@
     <select id="queryMyFriendByUserId" resultType="com.eleven.entity.MyFriend">
         select *
         from im_my_friend
-        when my_id = #{id}
+        where my_account = #{id}
     </select>
+    <select id="getFriendBy2Account" resultType="com.eleven.entity.MyFriend">
+        select
+            *
+        from im_my_friend
+        where
+            my_account = #{myAccount}
+        AND friend_account = #{friendAccount}
+    </select>
+
+    <insert id="insertBat">
+        insert into im_my_friend
+            (id,my_account,friend_account,particular,blocked,del_flag,create_time,
+            nickname,tag,intro,friend_group)
+        values
+        <foreach collection="list" item="friend" separator=",">
+            (#{friend.id},#{friend.myAccount},#{friend.friendAccount},
+            #{friend.particular},#{friend.blocked},#{friend.delFlag},#{friend.createTime},
+            #{friend.nickname},#{friend.tag},#{friend.intro},#{friend.friendGroup})
+        </foreach>
+    </insert>
 </mapper>

@@ -33,11 +33,11 @@ private static final long serialVersionUID=1L;
     @ApiModelProperty(value = "主键id")
     private String id;
 
-    @ApiModelProperty(value = "我的id")
-    private String myId;
+    @ApiModelProperty(value = "我的账号")
+    private String myAccount;
 
-    @ApiModelProperty(value = "好友id")
-    private String friendId;
+    @ApiModelProperty(value = "好友账号")
+    private String friendAccount;
 
     @ApiModelProperty(value = "0 正常好友 1特别关系")
     private String particular;
@@ -69,7 +69,7 @@ private static final long serialVersionUID=1L;
     @ApiModelProperty(value = "好友分组")
     private String friendGroup;
 
-    @ApiModelProperty(value = "不要")
+    @ApiModelProperty(value = "备用字段")
     private String by1;
 
     private String by2;

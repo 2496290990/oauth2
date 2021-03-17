@@ -19,4 +19,11 @@ public interface MyFriendService extends IService<MyFriend> {
      * @return
      */
     Result queryMyFriend();
+
+    /**
+     * 添加好友
+     * @param myFriend
+     * @return
+     */
+    Result addFriend(MyFriend myFriend);
 }
