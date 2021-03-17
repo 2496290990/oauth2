@@ -10,7 +10,10 @@ spring:
     multipart:
       max-request-size: 100MB
       max-file-size: 100MB
-
+  mvc:
+    format:
+      date-time: yyyy-MM-dd HH:mm:ss
+      date: yyyy-MM-dd
 server:
   port: 8099
 mybatis-plus:
@@ -18,3 +21,6 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+oauth2:
+  clientId: admin
+  secret: elevenZ

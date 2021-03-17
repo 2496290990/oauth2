@@ -2,6 +2,7 @@ package com.eleven.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -36,6 +37,11 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
     @Autowired
     @Qualifier("redisTokenStore")
     private TokenStore tokenStore;
+
+    @Value("${oauth2.clientId}")
+    private String clientId;
+    @Value("${oauth2.secret}")
+    private String secret;
 
     @Bean
     public DefaultTokenServices tokenServices(){
@@ -77,9 +83,9 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
         // 使用内存认证模式
         clients.inMemory()
                 // clientId
-                .withClient("admin")
+                .withClient(clientId)
                 // client密码
-                .secret(passwordEncoder.encode("admin"))
+                .secret(passwordEncoder.encode(secret))
                 // 认证成功之后的重定向地址，获取授权码
                 .redirectUris("http://www.baidu.com")
                 // 授权范围

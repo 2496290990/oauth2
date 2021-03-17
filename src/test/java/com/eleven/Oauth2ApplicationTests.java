@@ -14,11 +14,11 @@ class Oauth2ApplicationTests {
     void contextLoads() {
         Map<String,Object> map = new HashMap<>();
         map.put("grant_type", "password");
-        map.put("username", "admin");
+        map.put("username", "372322840");
         map.put("scope", "all");
         map.put("password", "admin");
-        String body = HttpRequest.post("localhost:8080/oauth/token")
-                .basicAuth("admin", "admin")
+        String body = HttpRequest.post("localhost:8099/oauth/token")
+                .basicAuth("admin", "elevenZ")
                 .form(map)
                 .execute()
                 .body();

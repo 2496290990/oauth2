@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eleven.mapper.CircleReviewMapper">
+
+    <resultMap id="baseMap" type="com.eleven.entity.CircleReview">
+        <id property="id" column="id" /> <!--主键id-->
+        <result property="circleId" column="circle_id" /><!--朋友圈的id-->
+        <result property="reviewId" column="review_id" /><!--评论人id-->
+        <result property="reviewContent" column="review_content" /><!--评论内容-->
+        <result property="parentId" column="parent_id" /><!--父级id-->
+        <result property="createTime" column="create_time" /><!--创建时间-->
+        <result property="createBy" column="create_by" /><!--创建人-->
+        <result property="updateTime" column="update_time" /><!--更新时间-->
+        <result property="updateBy" column="update_by" /><!--更新人-->
+        <result property="delFlag" column="del_flag" /><!--删除标记-->
+        <result property="by1" column="by1" /><!--备用字段-->
+        <result property="by2" column="by2" /><!--备用字段-->
+        <result property="by3" column="by3" /><!--备用字段-->
+        <result property="by4" column="by4" /><!--备用字段-->
+    </resultMap>
+
+</mapper>
+
+

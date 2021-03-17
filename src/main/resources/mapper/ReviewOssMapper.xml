@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eleven.mapper.ReviewOssMapper">
+
+    <resultMap id="baseMap" type="com.eleven.entity.ReviewOss">
+        <id property="id" column="id" /><!--主键id-->
+        <result property="reviewId" column="review_id" /> <!--评论的id-->
+        <result property="sort" column="sort" /> <!--排序字段-->
+        <result property="url" column="url" /> <!--文件url-->
+        <result property="createTime" column="create_time" /><!--创建时间-->
+        <result property="createBy" column="create_by" /><!--创建人-->
+        <result property="updateTime" column="update_time" /><!--更新时间-->
+        <result property="updateBy" column="update_by" /><!--更新人-->
+        <result property="delFlag" column="del_flag" /><!--删除标记-->
+        <result property="by1" column="by1" /><!--备用字段-->
+        <result property="by2" column="by2" /><!--备用字段-->
+        <result property="by3" column="by3" /><!--备用字段-->
+        <result property="by4" column="by4" /><!--备用字段-->
+    </resultMap>
+
+    <sql id="querySql">
+        select
+            id,review_id,sort,url,create_time,create_by,update_by,update_time,del_flag
+        from im_review_oss tb
+    </sql>
+
+    <select id="selectById" resultMap="baseMap">
+        <include refid="querySql" />
+        <where>
+            id = #{id}
+            and del_flag = '1'
+        </where>
+    </select>
+</mapper>

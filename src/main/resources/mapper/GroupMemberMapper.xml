@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eleven.mapper.GroupMemberMapper">
+
+    <select id="queryMembersByGroupId" resultType="com.eleven.entity.GroupMember">
+        select *
+        from im_group_member
+        where group_id = #{id}
+    </select>
+</mapper>

@@ -28,6 +28,12 @@ public class LoginServiceImpl implements LoginService {
     @Value("${server.port}")
     private String port;
 
+    @Value("${oauth2.clientId}")
+    private String clientId;
+
+    @Value("${oauth2.secret}")
+    private String secret;
+
     @Override
     public Result login(LoginUser user) {
         Map<String,Object> map = new HashMap<>();
@@ -36,7 +42,7 @@ public class LoginServiceImpl implements LoginService {
         map.put("scope", "all");
         map.put("password", user.getPassword());
         String body = HttpRequest.post("localhost:" + port + "/oauth/token")
-                .basicAuth(user.getUsername(), user.getPassword())
+                .basicAuth(clientId, secret)
                 .form(map)
                 .execute()
                 .body();

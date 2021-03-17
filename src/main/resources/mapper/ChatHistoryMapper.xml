@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.eleven.mapper.ChatHistoryMapper">
+
+    <select id="selectChatHistory" resultType="com.eleven.entity.ChatHistory">
+        select *
+        from im_chat_history
+        where sender_id = #{senderId}
+        or recipient = #{senderId}
+    </select>
+</mapper>
