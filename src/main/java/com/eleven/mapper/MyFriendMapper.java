@@ -35,4 +35,11 @@ public interface MyFriendMapper extends BaseMapper<MyFriend> {
      * @return
      */
     MyFriend getFriendBy2Account(MyFriend myFriend);
+
+    /**
+     * 查询我的好友
+     * @param account
+     * @return
+     */
+    List<MyFriend> queryMyFriend(String account);
 }

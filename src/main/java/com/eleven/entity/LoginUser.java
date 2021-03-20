@@ -3,6 +3,7 @@ package com.eleven.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.eleven.common.PageParam;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,7 +20,7 @@ import java.util.List;
  */
 @Data
 @TableName("im_user")
-public class LoginUser implements UserDetails {
+public class LoginUser extends PageParam implements UserDetails {
 
     private String username;
 
@@ -53,6 +54,9 @@ public class LoginUser implements UserDetails {
     private String intro;
     /** 生日信息 */
     private LocalDate birth;
+
+    @TableField(exist = false)
+    private String rePwd;
 
     public LoginUser(){}
 

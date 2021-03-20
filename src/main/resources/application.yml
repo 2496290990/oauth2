@@ -1,6 +1,8 @@
 spring:
   redis:
-    host: localhost
+    host: 121.199.57.24
+    password: 123456
+    port: 6379
   datasource:
     url: jdbc:mysql://localhost:3306/zs_im?serverTimezone=UTC
     username: root

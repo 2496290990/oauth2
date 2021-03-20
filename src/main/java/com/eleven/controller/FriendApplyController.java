@@ -7,10 +7,7 @@ import com.eleven.service.FriendApplyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * <p>
@@ -40,6 +37,11 @@ public class FriendApplyController {
         return friendApplyService.operationApply(friendApply);
     }
 
+    @GetMapping("/query")
+    @ApiOperation(value = "查询好友申请")
+    public Result queryApply(){
+        return friendApplyService.queryApply();
+    }
 
 }
 

@@ -21,4 +21,6 @@ public interface ChatHistoryMapper extends BaseMapper<ChatHistory> {
      * @return
      */
     List<ChatHistory> selectChatHistory(ChatHistory chatHistory);
+
+    Integer delChatHistory(ChatHistory chatHistory);
 }

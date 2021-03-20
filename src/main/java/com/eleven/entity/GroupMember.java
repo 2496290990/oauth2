@@ -3,6 +3,7 @@ package com.eleven.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.eleven.common.PageParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -25,7 +26,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("im_group_member")
 @ApiModel(value="GroupMember对象", description="群组成员表")
-public class GroupMember implements Serializable {
+public class GroupMember extends PageParam implements Serializable {
 
 private static final long serialVersionUID=1L;
 

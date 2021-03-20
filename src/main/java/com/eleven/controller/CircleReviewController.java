@@ -6,6 +6,9 @@ import com.eleven.service.CircleReviewService;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @author zhaojinhui
@@ -26,8 +29,8 @@ public class CircleReviewController {
      * @return
      */
     @PostMapping("/insert")
-    public Result insertCircleReview(@RequestBody CircleReview circleReview){
-        return circleReviewService.insertReview(circleReview);
+    public Result insertCircleReview(CircleReview circleReview, List<MultipartFile>files){
+        return circleReviewService.insertReview(circleReview,files);
     }
 
     @GetMapping("/query")
@@ -57,4 +60,7 @@ public class CircleReviewController {
     public Result  delCircleReview(CircleReview review){
         return  circleReviewService.deleteCircleReview(review);
     }
+
+
+
 }

@@ -27,4 +27,10 @@ public interface FriendApplyService extends IService<FriendApply> {
      * @return
      */
     Result operationApply(FriendApply friendApply);
+
+    /**
+     * 查询我的好友申请
+     * @return
+     */
+    Result queryApply();
 }

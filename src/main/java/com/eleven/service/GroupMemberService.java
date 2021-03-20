@@ -28,5 +28,10 @@ public interface GroupMemberService extends IService<GroupMember> {
      */
     Result delMember(GroupMember groupMember);
 
-
+    /**
+     * 添加群成员
+     * @param groupMember
+     * @return
+     */
+    Result insert(GroupMember groupMember);
 }

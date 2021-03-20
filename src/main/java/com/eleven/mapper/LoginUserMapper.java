@@ -2,6 +2,7 @@ package com.eleven.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.eleven.entity.LoginUser;
+import com.eleven.entity.MyFriend;
 
 import java.util.List;
 
@@ -24,4 +25,12 @@ public interface LoginUserMapper extends BaseMapper<LoginUser> {
      * @return
      */
     LoginUser selectUser(String username);
+
+    /**
+     * 根据好友的账号查询好友信息
+     * @return
+     * @param account
+     */
+    LoginUser queryUserByAccount(String account);
+
 }

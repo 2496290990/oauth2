@@ -33,5 +33,10 @@ public class MyFriendController {
     public Result addFriend(@RequestBody MyFriend myFriend){
         return myFriendService.addFriend(myFriend);
     }
+
+    @PutMapping
+    public Result updateMyFriend(@RequestBody MyFriend myFriend){
+        return myFriendService.updateMyFriend(myFriend);
+    }
 }
 

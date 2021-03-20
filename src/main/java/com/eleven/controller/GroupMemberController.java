@@ -38,5 +38,10 @@ public class GroupMemberController {
         return groupMemberService.delMember(groupMember);
     }
 
+    @PostMapping
+    @ApiOperation(value = "新增群成员")
+    public Result insertMember(@RequestBody GroupMember groupMember){
+        return groupMemberService.insert(groupMember);
+    }
 }
 

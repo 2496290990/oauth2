@@ -2,4 +2,77 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eleven.mapper.CircleOfFriendMapper">
 
+    <resultMap id="baseMap" type="com.eleven.entity.CircleOfFriend">
+        <id column="id" property="id" /><!---->
+        <result column="utterer" property="utterer" /><!---->
+        <result column="text" property="text" /><!---->
+        <result column="createTime" property="createTime" /><!---->
+        <result column="updateTime" property="updateTime" /><!---->
+        <result column="delFlag" property="delFlag" /><!---->
+
+        <collection property="circleOssList" ofType="com.eleven.entity.CircleOss">
+            <id property="id" column="ico_id" />
+            <result property="circleId" column="ico_circle_id"/>
+            <result property="sort" column="ico_sort"/>
+            <result property="url" column="ico_url" />
+        </collection>
+        <collection property="circleReviewList" ofType="com.eleven.entity.CircleReview">
+            <id property="id" column="icr_id" />
+            <result property="circleId" column="icr_circle_id"/>
+            <result property="reviewId" column="icr_review_id" />
+            <result property="reviewContent" column="icr_review_content" />
+            <result property="parentId" column="icr_parent_id" />
+        </collection>
+        <collection property="reviewOssList" ofType="com.eleven.entity.ReviewOss">
+            <id property="id" column="iro_id"/>
+            <result property="reviewId" column="iro_review_id" />
+            <result property="url" column="iro_url"/>
+            <result property="sort" column="iro_sort"/>
+        </collection>
+    </resultMap>
+
+    <select id="queryLast20Circles" resultMap="baseMap">
+        select
+            *
+        from im_circle_of_friend
+        where
+            del_flag = '1'
+        and utterer in
+        <foreach collection="list" item="id" open="(" separator="," close=")" >
+            #{id}
+        </foreach>
+        limit 20
+    </select>
+    <select id="queryOwnCircle" resultMap="baseMap">
+        select
+            tb.* ,
+            ico.id as ico_id,
+            ico.circle_id as ico_circle_id,
+            ico.sort as ico_sort,
+            ico.url as ico_url,
+            icr.id as icr_id,
+            icr.circle_id as icr_circle_id,
+            icr.review_id as icr_review_id,
+            icr.review_content as icr_review_content,
+            icr.parent_id as icr_parent_id,
+            iro.id as iro_id,
+            iro.review_id as iro_review_id,
+            iro.url as iro_url,
+            iro.sort as iro_sort
+        from im_circle_of_friend tb
+        left join im_circle_oss ico on ico.circle_id = tb.id
+        left join im_circle_review icr on tb.id = icr.circle_id
+        left join im_review_oss iro on iro.review_id = icr.id
+        <where>
+            tb.del_flag = '1'
+            <if test="id != null">
+                and tb.id = #{id}
+            </if>
+            <if test="utterer != null">
+                and utterer = #{utterer}
+
+            </if>
+        </where>
+
+    </select>
 </mapper>

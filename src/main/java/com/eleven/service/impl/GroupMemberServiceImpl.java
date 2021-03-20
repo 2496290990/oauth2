@@ -35,4 +35,9 @@ public class GroupMemberServiceImpl extends ServiceImpl<GroupMemberMapper, Group
     public Result delMember(GroupMember groupMember) {
         return ResultFactory.success(groupMemberMapper.deleteById(groupMember.getId()));
     }
+
+    @Override
+    public Result insert(GroupMember groupMember) {
+        return ResultFactory.success(groupMemberMapper.insert(groupMember));
+    }
 }

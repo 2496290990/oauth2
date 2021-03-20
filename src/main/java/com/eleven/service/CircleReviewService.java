@@ -3,6 +3,9 @@ package com.eleven.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.eleven.common.Result;
 import com.eleven.entity.CircleReview;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 /**
  * @author zhaojinhui
@@ -19,7 +22,7 @@ public interface CircleReviewService extends IService<CircleReview> {
      * @date   2021年3月14日17:37:49
      * @author zjh
      */
-    Result insertReview(CircleReview circleReview);
+    Result insertReview(CircleReview circleReview, List<MultipartFile> files);
 
     /**
      * 根据id查询评论

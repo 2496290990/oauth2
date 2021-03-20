@@ -70,4 +70,9 @@ public class FriendGroupServiceImpl extends ServiceImpl<FriendGroupMapper, Frien
         List<FriendGroup> friendGroupList = friendGroupMapper.getGroupByLike(friendGroup);
         return ResultFactory.success(friendGroup);
     }
+
+    @Override
+    public Result updateFriendGroup(FriendGroup friendGroup) {
+        return ResultFactory.success(friendGroupMapper.updateById(friendGroup));
+    }
 }

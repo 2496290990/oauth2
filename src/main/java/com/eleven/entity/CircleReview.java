@@ -1,11 +1,14 @@
 package com.eleven.entity;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.eleven.common.PageParam;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * @author zhaojinhui
@@ -16,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("im_circle_review")
-public class CircleReview {
+public class CircleReview extends PageParam {
 
     private static final Long serialVersionUID = 1L;
 
@@ -54,4 +57,10 @@ public class CircleReview {
     private String by2;
     private String by3;
     private String by4;
+
+    @TableField(exist = false)
+    private List<CircleReview> child;
+
+    @TableField(exist = false)
+    private List<ReviewOss> reviewOssList;
 }

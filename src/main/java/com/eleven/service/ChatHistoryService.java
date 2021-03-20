@@ -27,4 +27,18 @@ public interface ChatHistoryService extends IService<ChatHistory> {
      * @return
      */
     Result sendChat(ChatHistory chatHistory);
+
+    /**
+     * 保存聊天记录
+     * @param chatHistory
+     * @return
+     */
+    Result saveChatHistory(ChatHistory chatHistory);
+
+    /**
+     * 删除聊天记录
+     * @param chatHistory
+     * @return
+     */
+    Result delChatHistory(ChatHistory chatHistory);
 }

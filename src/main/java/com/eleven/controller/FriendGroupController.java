@@ -35,4 +35,8 @@ public class FriendGroupController {
         return friendGroupService.queryMyGroupList(friendGroup);
     }
 
+    @PutMapping("/update")
+    public Result updateFriendGroup(@RequestBody FriendGroup friendGroup){
+        return friendGroupService.updateFriendGroup(friendGroup);
+    }
 }

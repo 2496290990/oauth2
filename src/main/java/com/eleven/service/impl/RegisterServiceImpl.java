@@ -1,10 +1,7 @@
 package com.eleven.service.impl;
 
 import cn.hutool.core.util.StrUtil;
-import com.eleven.common.EasemobRegResult;
-import com.eleven.common.Email;
-import com.eleven.common.Result;
-import com.eleven.common.ResultFactory;
+import com.eleven.common.*;
 import com.eleven.entity.LoginUser;
 import com.eleven.entity.VerifyLog;
 import com.eleven.mapper.LoginUserMapper;
@@ -112,8 +109,8 @@ public class RegisterServiceImpl implements RegisterService {
         int effectRow = loginUserMapper.insert(loginUser);
         //==================注册环信用户============
         EasemobRegResult easemobRegResult = easemobUtil.openRegister(loginUser);
-        List<EasemobRegResult.Entities> entities = easemobRegResult.getEntities();
-        // TODO: 2021/3/17 插入信息 
+        List<Entities> entities = easemobRegResult.getEntities();
+        // TODO: 2021/3/17 插入信息
         return effectRow != 0 ?
                 ResultFactory.success("注册成功") :
                 ResultFactory.failed("注册失败，请联系管理员");

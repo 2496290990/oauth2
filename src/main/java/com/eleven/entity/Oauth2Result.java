@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Oauth2Result {
+public class Oauth2Result  {
 
     /** token */
     @SerializedName("access_token")

@@ -1,5 +1,6 @@
 package com.eleven.entity;
 
+import com.eleven.common.PageParam;
 import lombok.Data;
 import lombok.ToString;
 
@@ -10,7 +11,7 @@ import lombok.ToString;
  */
 @Data
 @ToString
-public class ImgUploadOss {
+public class ImgUploadOss extends PageParam {
 
     /** 返回的状态码 */
     private int code;

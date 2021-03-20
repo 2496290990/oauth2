@@ -3,6 +3,7 @@ package com.eleven.entity;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.eleven.common.PageParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -10,6 +11,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 /**
@@ -25,7 +27,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("im_chat_history")
 @ApiModel(value="ChatHistory对象", description="聊天记录表")
-public class ChatHistory implements Serializable {
+public class ChatHistory extends PageParam implements Serializable {
 
 private static final long serialVersionUID=1L;
 
@@ -73,6 +75,12 @@ private static final long serialVersionUID=1L;
     private String by5;
 
     private String by6;
+
+    @TableField(exist = false)
+    private LocalDate queryStart;
+
+    @TableField(exist =  false)
+    private LocalDate queryEnd;
 
 
 }

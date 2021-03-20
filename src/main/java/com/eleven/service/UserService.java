@@ -1,6 +1,11 @@
 package com.eleven.service;
 
 import com.eleven.common.Result;
+import com.eleven.entity.LoginUser;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author zhaojinhui
@@ -14,4 +19,27 @@ public interface UserService  {
      * @return
      */
     Result getUser();
+
+    /**
+     * 更新用户信
+     * @param loginUser
+     * @return
+     */
+    Result updateUser(LoginUser loginUser);
+
+    /**
+     * 更新用户密码
+     * @param loginUser
+     * @return
+     */
+    Result updateUserPwd(LoginUser loginUser);
+
+    /**
+     * 根据用户账号生成二维码
+     * @param account 用户账号
+     * @param request
+     * @param response
+     * @return
+     */
+    Result getQrCodeByAccount(String account, HttpServletRequest request, HttpServletResponse response);
 }

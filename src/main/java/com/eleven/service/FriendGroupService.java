@@ -32,4 +32,11 @@ public interface FriendGroupService extends IService<FriendGroup> {
      * @return
      */
     Result queryMyGroupList(FriendGroup friendGroup);
+
+    /**
+     * 更新好友群组信息
+     * @param friendGroup
+     * @return
+     */
+    Result updateFriendGroup(FriendGroup friendGroup);
 }

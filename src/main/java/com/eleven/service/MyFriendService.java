@@ -26,4 +26,11 @@ public interface MyFriendService extends IService<MyFriend> {
      * @return
      */
     Result addFriend(MyFriend myFriend);
+
+    /**
+     * 更新
+     * @param myFriend
+     * @return
+     */
+    Result updateMyFriend(MyFriend myFriend);
 }

@@ -15,6 +15,12 @@
             my_account = #{myAccount}
         AND friend_account = #{friendAccount}
     </select>
+    <select id="queryMyFriend" resultType="com.eleven.entity.MyFriend">
+        select
+            *
+        from im_user
+        where my_account = #{myAccount}
+    </select>
 
     <insert id="insertBat">
         insert into im_my_friend

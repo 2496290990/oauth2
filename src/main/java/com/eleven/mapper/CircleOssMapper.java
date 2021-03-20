@@ -2,6 +2,7 @@ package com.eleven.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.eleven.entity.CircleOss;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -19,5 +20,5 @@ public interface CircleOssMapper extends BaseMapper<CircleOss> {
      * 批量插入
      * @param ossList
      */
-    void insertBat(List<CircleOss> ossList);
+    void insertBat(@Param("list") List<CircleOss> ossList);
 }

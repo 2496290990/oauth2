@@ -4,14 +4,17 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.eleven.common.PageParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
+import org.springframework.data.geo.Circle;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 /**
  * <p>
@@ -26,7 +29,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("im_circle_of_friend")
 @ApiModel(value="CircleOfFriend对象", description="动态记录表")
-public class CircleOfFriend implements Serializable {
+public class CircleOfFriend extends PageParam implements Serializable {
 
 private static final long serialVersionUID=1L;
 
@@ -61,5 +64,15 @@ private static final long serialVersionUID=1L;
 
     private String by5;
 
+    /** 朋友圈文件集合 */
+    @TableField(exist = false)
+    private List<CircleOss> circleOssList;
+
+    /** 朋友圈平路 */
+    @TableField(exist = false)
+    private List<CircleReview> circleReviewList;
+
+    @TableField(exist = false)
+    private List<ReviewOss> reviewOssList;
 
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
+import com.eleven.common.PageParam;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -26,7 +27,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("im_my_friend")
 @ApiModel(value="MyFriend对象", description="好友关系表")
-public class MyFriend implements Serializable {
+public class MyFriend extends PageParam implements Serializable {
 
 private static final long serialVersionUID=1L;
 

@@ -72,7 +72,6 @@ public class AuthorizationServer extends AuthorizationServerConfigurerAdapter {
                 .authenticationManager(authenticationManager)
                 //token存储位置
                 .tokenStore(tokenStore)
-
                 .tokenServices(tokenServices());
         ;
 

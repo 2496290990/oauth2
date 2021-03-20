@@ -90,4 +90,9 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
         }
 
     }
+
+    @Override
+    public Result updateMyFriend(MyFriend myFriend) {
+        return ResultFactory.success(myFriendMapper.updateById(myFriend));
+    }
 }

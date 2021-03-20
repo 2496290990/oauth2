@@ -25,6 +25,15 @@
             id,review_id,sort,url,create_time,create_by,update_by,update_time,del_flag
         from im_review_oss tb
     </sql>
+    <insert id="insertBat">
+        insert into im_review_oss
+            (id,review_id,sort,url,create_time,create_by,update_by,update_time,del_flag)
+        values
+        <foreach collection="list" item="oss" separator=",">
+            (#{oss.id},#{oss.reviewId},#{oss.sort},#{oss.url},
+            #{oss.createTime},#{oss.createBy},#{oss.updateBy},#{oss.updateTime},#{oss.delFlag})
+        </foreach>
+    </insert>
 
     <select id="selectById" resultMap="baseMap">
         <include refid="querySql" />
