@@ -19,8 +19,10 @@ import java.io.InputStream;
  */
 public class ImgUploadUtil {
 
+    private static final String requestUrl = "http://test.imgurl.org/upload/localhost";
+
     public static ImgUploadOss imgUpload(byte[] data, String fileName){
-        String body = HttpRequest.post("https://imgurl.org/upload/ftp")
+        String body = HttpRequest.post(requestUrl)
                 .contentType(ContentType.MULTIPART.toString())
                 .form("file", data,fileName)
                 .execute()
@@ -30,7 +32,7 @@ public class ImgUploadUtil {
     }
 
     public static ImgUploadOss imgUpload(File file){
-        String body = HttpRequest.post("https://imgurl.org/upload/ftp")
+        String body = HttpRequest.post(requestUrl)
                 .contentType(ContentType.MULTIPART.toString())
                 .form("file", file)
                 .execute()
@@ -43,7 +45,7 @@ public class ImgUploadUtil {
         InputStream inputStream = file.getInputStream();
         File tempFile = new File("temp.png");
         FileUtils.copyInputStreamToFile(inputStream, tempFile);
-        String body = HttpRequest.post("https://imgurl.org/upload/ftp")
+        String body = HttpRequest.post(requestUrl)
                 .contentType(ContentType.MULTIPART.toString())
                 .form("file", tempFile)
                 .execute()

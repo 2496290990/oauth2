@@ -49,30 +49,34 @@ public class RegisterServiceImpl implements RegisterService {
 
     @Override
     public Result sendEmailCode(String emailAddress) {
-        Email email = new Email();
-        email.setSendTo(emailAddress);
-        email.setSubject("校友邦注册邮件");
-        String code = "";
-        VerifyLog verifyLog = new VerifyLog();
+        LoginUser loginUser = loginUserMapper.selectUser(emailAddress);
+        if(loginUser == null){
+            Email email = new Email();
+            email.setSendTo(emailAddress);
+            email.setSubject("校友邦注册邮件");
+            String code = "";
+            VerifyLog verifyLog = new VerifyLog();
 
-        try{
-            //获取验证码
-            code = emailUtil.sendEmail(email, true);
-            //将验证码放置到redis中 三分钟内有效
-            redisTemplate.opsForValue().set(emailAddress, code,3, TimeUnit.MINUTES);
-            //将数据存放到数据库中
-            verifyLog.setId(snowFlake.nextId());
-            verifyLog.setCreateTime(LocalDateTime.now());
-            verifyLog.setExpireTime(LocalDateTime.now().plusMinutes(3));
-            verifyLog.setVerifyCode(code);
-            verifyLog.setRegisterAccount(emailAddress);
-            verifyLog.setType(0);
-            verifyLogMapper.insert(verifyLog);
-            return ResultFactory.success(code);
-        }catch(Exception e){
-            e.printStackTrace();
-            return ResultFactory.failed("发送注册邮件失败，请联系系统管理员！");
+            try{
+                //获取验证码
+                code = emailUtil.sendEmail(email, true);
+                //将验证码放置到redis中 三分钟内有效
+                redisTemplate.opsForValue().set(emailAddress, code,3, TimeUnit.MINUTES);
+                //将数据存放到数据库中
+                verifyLog.setId(snowFlake.nextId());
+                verifyLog.setCreateTime(LocalDateTime.now());
+                verifyLog.setExpireTime(LocalDateTime.now().plusMinutes(3));
+                verifyLog.setVerifyCode(code);
+                verifyLog.setRegisterAccount(emailAddress);
+                verifyLog.setType(0);
+                verifyLogMapper.insert(verifyLog);
+                return ResultFactory.success(code);
+            }catch(Exception e){
+                e.printStackTrace();
+                return ResultFactory.failed("发送注册邮件失败，请联系系统管理员！");
+            }
         }
+        return ResultFactory.failed("该账号已注册，请换一个新邮箱或手机号注册");
     }
 
     @Override
@@ -112,7 +116,7 @@ public class RegisterServiceImpl implements RegisterService {
         List<Entities> entities = easemobRegResult.getEntities();
         // TODO: 2021/3/17 插入信息
         return effectRow != 0 ?
-                ResultFactory.success("注册成功") :
+                ResultFactory.success(account) :
                 ResultFactory.failed("注册失败，请联系管理员");
 
     }

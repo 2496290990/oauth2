@@ -1,5 +1,6 @@
 package com.eleven.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import com.eleven.common.Result;
 import com.eleven.common.ResultFactory;
@@ -7,10 +8,15 @@ import com.eleven.entity.LoginUser;
 import com.eleven.entity.Oauth2Result;
 import com.eleven.service.LoginService;
 import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +26,7 @@ import java.util.Map;
  * @apiNote
  */
 @Service
+@Slf4j
 public class LoginServiceImpl implements LoginService {
 
     @Autowired
@@ -34,6 +41,9 @@ public class LoginServiceImpl implements LoginService {
     @Value("${oauth2.secret}")
     private String secret;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
+
     @Override
     public Result login(LoginUser user) {
         Map<String,Object> map = new HashMap<>();
@@ -46,7 +56,22 @@ public class LoginServiceImpl implements LoginService {
                 .form(map)
                 .execute()
                 .body();
-
+        log.info("登录结果 -{}",body);
         return ResultFactory.success(gson.fromJson(body, Oauth2Result.class));
+    }
+
+    @Override
+    public Result logout(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        if(StrUtil.isNotBlank(token)){
+            token = token.replaceAll("Bearer ", "");
+        }
+        String authKey = "auth-token:auth:" + token;
+        String accessKey = "auth-token:access:" + token;
+        redisTemplate.delete(authKey);
+        redisTemplate.delete(accessKey);
+        SecurityContext context = SecurityContextHolder.getContext();
+        context.setAuthentication(null);
+        return ResultFactory.success("用户退出成功");
     }
 }

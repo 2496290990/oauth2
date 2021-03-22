@@ -4,6 +4,9 @@ import com.eleven.common.Result;
 import com.eleven.common.ResultFactory;
 import com.eleven.entity.LoginUser;
 import com.eleven.service.UserService;
+import com.eleven.util.SecurityUtils;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,10 +25,17 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/user")
 @Slf4j
+@Api("用户控制器")
 public class UserController {
 
     @Autowired
     private UserService userService;
+
+    @GetMapping("/getUser")
+    @ApiOperation("测试通过token获取用户信息")
+    public Result getCurrentUser(){
+        return ResultFactory.success(SecurityUtils.getUserInfo());
+    }
 
     @PutMapping
     public Result updateUser(@RequestBody LoginUser loginUser){
@@ -33,11 +43,13 @@ public class UserController {
     }
 
     @PutMapping("/updatePwd")
+    @ApiOperation("更新密码")
     public Result updateUserPwd(@RequestBody LoginUser loginUser){
         return userService.updateUserPwd(loginUser);
     }
 
     @GetMapping("/getQrCode")
+    @ApiOperation("获取用户二维码")
     public Result getQrCodeByAccount(String account, HttpServletRequest request, HttpServletResponse response){
         return userService.getQrCodeByAccount(account,request,response);
     }
