@@ -19,7 +19,7 @@ import java.io.IOException;
  */
 @RestController
 @RequestMapping("/common")
-@Api("公共组件")
+@Api(tags = "公共组件")
 public class CommonController {
 
     @Autowired

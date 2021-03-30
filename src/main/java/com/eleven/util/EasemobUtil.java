@@ -21,21 +21,22 @@ import java.util.concurrent.TimeUnit;
  * @date 2021/3/17 21:48
  * @apiNote
  */
+@Component
 public class EasemobUtil {
 
-    @Value("${ease:clientId}")
+    @Value("${ease.clientId}")
     String clientId;
-    @Value("${ease:clientSecret}")
+    @Value("${ease.clientSecret}")
     String clientSecret;
-    @Value("${ease:appKey}")
+    @Value("${ease.appKey}")
     String appKey ;
-    @Value("${ease:orgName}")
+    @Value("${ease.orgName}")
     String orgName;
-    @Value("${ease:appName}")
+    @Value("${ease.appName}")
     String appName;
-    @Value("${ease:restApi}")
+    @Value("${ease.restApi}")
     String restApi;
-    @Value("${ease:baseUrl}")
+    @Value("${ease.baseUrl}")
     String baseUrl;
 
     @Autowired

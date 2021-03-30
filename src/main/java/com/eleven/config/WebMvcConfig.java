@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.Properties;
@@ -30,8 +31,5 @@ public class WebMvcConfig implements WebMvcConfigurer {
     public SnowFlake snowFlake(){
         return SnowFlake.getSnowFlake();
     }
-
-    @Bean
-    public EasemobUtil easemobUtil(){return new EasemobUtil();}
 
 }

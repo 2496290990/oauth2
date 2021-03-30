@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/register")
-@Api("注册相关")
+@Api(tags = "注册相关")
 public class RegisterController {
 
     @Autowired

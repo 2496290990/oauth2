@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/reviewOss")
-@Api("图片文件")
+@Api(tags = "图片文件")
 public class ReviewOssController {
 
     @Autowired

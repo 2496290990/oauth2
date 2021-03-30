@@ -33,4 +33,4 @@ ease:
   orgName: 1102210107065543
   appName: alumni
   restApi: https://a1.easemob.com
-  tokenUrl: https://a1.easemob.com/1102210107065543/alumni
+  baseUrl: https://a1.easemob.com/1102210107065543/alumni

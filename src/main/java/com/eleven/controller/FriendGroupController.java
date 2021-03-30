@@ -17,7 +17,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/friendGroup")
-@Api("好友群组")
+@Api(tags = "好友群组")
 public class FriendGroupController {
 
     @Autowired

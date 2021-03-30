@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 @RestController
 @RequestMapping("/oauth")
-@Api("登录相关")
+@Api(tags = "登录相关")
 public class LoginController {
 
     @Autowired

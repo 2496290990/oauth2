@@ -112,8 +112,8 @@ public class RegisterServiceImpl implements RegisterService {
         loginUser.setPassword(passwordEncoder.encode(password));
         int effectRow = loginUserMapper.insert(loginUser);
         //==================注册环信用户============
-        EasemobRegResult easemobRegResult = easemobUtil.openRegister(loginUser);
-        List<Entities> entities = easemobRegResult.getEntities();
+       /* EasemobRegResult easemobRegResult = easemobUtil.openRegister(loginUser);
+        List<Entities> entities = easemobRegResult.getEntities();*/
         // TODO: 2021/3/17 插入信息
         return effectRow != 0 ?
                 ResultFactory.success(account) :

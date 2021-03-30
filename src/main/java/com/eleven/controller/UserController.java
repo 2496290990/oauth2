@@ -25,7 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 @RestController
 @RequestMapping("/user")
 @Slf4j
-@Api("用户控制器")
+@Api(tags = "用户控制器")
 public class UserController {
 
     @Autowired

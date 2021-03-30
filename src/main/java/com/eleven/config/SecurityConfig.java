@@ -1,5 +1,6 @@
 package com.eleven.config;
 
+import io.swagger.models.HttpMethod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -49,12 +50,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf()
                 .disable()
+                .cors()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/oauth/**","/login/**","logout/**","/common/**").permitAll()
+                .antMatchers("/oauth/**","/login/**","logout/**","/common/**", "options").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().permitAll()
         ;
-
     }
 }

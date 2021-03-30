@@ -36,7 +36,7 @@ public class VerifyLogController {
     @PostMapping("/verifyLastCode")
     @ApiOperation(value = "验证验证码是否正确",notes = "验证验证码是否可用，必须参数registerAccount,type,verifyCode")
     public Result verifyLastCode(@RequestBody VerifyLog verifyLog){
-        return  verifyLogService.verifyLastCode(verifyLog);
+        return  verifyLogService .verifyLastCode(verifyLog);
     }
 }
 
