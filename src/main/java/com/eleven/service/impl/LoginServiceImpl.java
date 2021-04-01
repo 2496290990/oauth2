@@ -6,6 +6,8 @@ import com.eleven.common.Result;
 import com.eleven.common.ResultFactory;
 import com.eleven.entity.LoginUser;
 import com.eleven.entity.Oauth2Result;
+import com.eleven.mapper.LoginUserMapper;
+import com.eleven.mapper.UserMapper;
 import com.eleven.service.LoginService;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,9 @@ public class LoginServiceImpl implements LoginService {
     @Autowired
     private Gson gson;
 
+    @Autowired
+    private LoginUserMapper userMapper;
+
     @Value("${server.port}")
     private String port;
 
@@ -56,8 +61,18 @@ public class LoginServiceImpl implements LoginService {
                 .form(map)
                 .execute()
                 .body();
-        log.info("登录结果 -{}",body);
-        return ResultFactory.success(gson.fromJson(body, Oauth2Result.class));
+
+        Oauth2Result data = gson.fromJson(body, Oauth2Result.class);
+
+        if(StrUtil.isBlank(data.getError())){
+            LoginUser loginUser = userMapper.selectUser(user.getUsername());
+            data.setAccount(loginUser.getAccount());
+            data.setHxPwd(loginUser.getHxPwd());
+            log.info("登录结果 -{}",data);
+            return ResultFactory.success(data);
+        }else{
+            return ResultFactory.buildResult(401,"用户名或密码错误",null);
+        }
     }
 
     @Override

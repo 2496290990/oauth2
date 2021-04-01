@@ -10,6 +10,21 @@
         <result column="create_time" property="createTime" />
         <result column="group_total" property="groupTotal" />
         <result column="update_time" property="updateTime" />
+
+        <collection property="myFriendList" ofType="com.eleven.entity.MyFriend">
+            <id column="id" property="id" />
+            <result column="my_account" property="myAccount" />
+            <result column="friend_account" property="friendAccount" />
+            <result column="particular" property="particular" />
+            <result column="blocked" property="blocked" />
+            <result column="del_flag" property="delFlag" />
+            <result column="create_time" property="createTime" />
+            <result column="update_time" property="updateTime" />
+            <result column="nickname" property="nickname" />
+            <result column="tag" property="tag" />
+            <result column="intro" property="intro" />
+            <result column="friend_group" property="friendGroup" />
+        </collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -39,6 +54,14 @@
             or user_id = 'admin'
         </where>
 
+    </select>
+    <select id="getGroupByAccount" resultMap="baseMap">
+        select
+            tb.*,
+            mf.*
+        from im_friend_group tb
+        left join im_my_friend mf on tb.id = mf.friend_group
+        where tb.user_id = #{account}
     </select>
     <sql id="queryLike">
         <if test="groupName != null">

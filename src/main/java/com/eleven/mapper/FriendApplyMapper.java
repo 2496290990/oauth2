@@ -13,4 +13,9 @@ import com.eleven.entity.FriendApply;
  */
 public interface FriendApplyMapper extends BaseMapper<FriendApply> {
 
+    /**
+     * 操作好友申请
+     * @param friendApply
+     */
+    void operationApply(FriendApply friendApply);
 }

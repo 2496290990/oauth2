@@ -3,6 +3,66 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eleven.mapper.LoginUserMapper">
+    <resultMap id="baseMap" type="com.eleven.entity.LoginUser">
+        <id column="id" property="id" />
+        <result column="account" property="account" />
+        <result column="password" property="password" />
+        <result column="salt" property="salt" />
+        <result column="sex" property="sex" />
+        <result column="phone" property="phone" />
+        <result column="email" property="email" />
+        <result column="create_time" property="createTime" />
+        <result column="del_flag" property="delFlag" />
+        <result column="update_time" property="updateTime" />
+        <result column="account_url" property="accountUrl" />
+        <result column="username" property="username" />
+        <result column="intro" property="intro" />
+        <result column="birth" property="birth" />
+        <result column="login_state" property="loginState" />
+        <result column="last_login_time" property="lastLoginTime" />
+    </resultMap>
+    <update id="updateByAccount">
+        update im_user
+        <set>
+            <if test="password != null and password != ''">
+                password = #{password},
+            </if>
+            <if test="sex != null and sex != ''">
+                sex = #{sex},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                del_flag = #{delFlag},
+            </if>
+            <if test="updateTime != null ">
+                update_time = #{updateTime},
+            </if>
+            <if test="accountUrl != null and accountUrl != ''">
+                account_url = #{accountUrl},
+            </if>
+            <if test="username != null and username != ''">
+                username = #{username},
+            </if>
+            <if test="intro != null and intro != ''">
+                intro = #{intro},
+            </if>
+            <if test="birth != null">
+                birth = #{birth},
+            </if>
+            <if test="loginState != null and loginState != ''">
+                login_state = #{loginState},
+            </if>
+            <if test="lastLoginTime != null">
+                last_login_time = #{lastLoginTime},
+            </if>
+        </set>
+        where account = #{account}
+    </update>
 
     <select id="queryAllAccount" resultType="java.lang.String">
         select
@@ -22,5 +82,12 @@
             *
         from im_user
         where account = #{account}
+    </select>
+    <select id="queryUserForSearch" resultMap="baseMap">
+        select
+            id,account,username,intro,account_url
+        from im_user
+        where account like '%${name}%'
+        or username like '%${name}%'
     </select>
 </mapper>

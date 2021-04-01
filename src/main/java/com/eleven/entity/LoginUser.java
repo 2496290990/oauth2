@@ -48,12 +48,23 @@ public class LoginUser extends PageParam implements UserDetails {
     /**更新时间*/
     @TableField(fill = FieldFill.UPDATE)
     private LocalDateTime updateTime;
+
+    private String updateBy;
     /** 头像地址 */
     private String accountUrl;
     /** 简介 */
     private String intro;
     /** 生日信息 */
     private LocalDate birth;
+
+    /**0下线 1上线 */
+    private Integer loginState;
+
+    /** 最后登录时间 */
+    private LocalDateTime lastLoginTime;
+
+    /** 环信的密码 */
+    private String hxPwd;
 
     @TableField(exist = false)
     private String rePwd;

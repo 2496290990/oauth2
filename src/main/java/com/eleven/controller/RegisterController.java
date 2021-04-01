@@ -4,6 +4,7 @@ import com.eleven.common.Result;
 import com.eleven.entity.LoginUser;
 import com.eleven.entity.VerifyLog;
 import com.eleven.service.RegisterService;
+import com.eleven.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class RegisterController {
     @Autowired
     private RegisterService registerService;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping("/send")
     @ApiOperation("发送邮箱验证码")
     public Result sendEmailCode(String email){
@@ -33,6 +37,13 @@ public class RegisterController {
     public Result verifyEmailCode(@RequestBody VerifyLog verifyLog){
         return registerService.verifyEmailCode(verifyLog);
     }
+
+    @GetMapping("/sendChange")
+    @ApiOperation("发送邮箱验证码")
+    public Result sendChangeEmail(String email){
+        return userService.sendEmailCode(email);
+    }
+
 
     @PostMapping("/reg")
     @ApiOperation("注册用户")

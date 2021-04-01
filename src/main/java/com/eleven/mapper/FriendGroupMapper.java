@@ -36,4 +36,10 @@ public interface FriendGroupMapper extends BaseMapper<FriendGroup> {
      */
     List<FriendGroup> getGroupByLike(FriendGroup friendGroup);
 
+    /**
+     * 根据登录人的账户信息查询好友列表
+     * @param account
+     * @return
+     */
+    List<FriendGroup> getGroupByAccount(String account);
 }

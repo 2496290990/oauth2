@@ -37,16 +37,17 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
     private MyFriendMapper myFriendMapper;
 
     @Autowired
-    private SnowFlake snowFlake;
+    private FriendGroupMapper friendGroupMapper;
 
     @Autowired
-    private FriendGroupMapper friendGroupMapper;
+    private SnowFlake snowFlake;
 
     @Override
     public Result queryMyFriend() {
         LoginUser userInfo = SecurityUtils.getUserInfo();
-        List<MyFriend> myFriendList =  myFriendMapper.queryMyFriendByUserId(userInfo.getAccount());
-        return ResultFactory.success(myFriendList);
+        List<FriendGroup> friendGroupList = friendGroupMapper.getGroupByAccount(userInfo.getAccount());
+        //List<MyFriend> myFriendList =  myFriendMapper.queryMyFriendByUserId(userInfo.getAccount());
+        return ResultFactory.success(friendGroupList);
     }
 
     @Override

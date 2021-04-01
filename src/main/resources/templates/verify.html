@@ -35,30 +35,29 @@
 <body>
 <div class="container">
     <div class="header">
-        <p>校友邦注册邮件</p>
+        <p>校友邦验证邮件</p>
         <hr>
     </div>
     <div class="mid">
         <div>
             <p>
-                欢迎注册<span class="company" th:text="${company}"/>。您的验证码是：<span class="code" th:text="${code}"/>
-                有效期为3分钟, 请立即验证。
+                尊敬的用户，欢迎您使用<span class="company" th:text="${company}"/>。您的验证码是：<span class="code" th:text="${code}"/>
+                有效期为3分钟, 请立即验证。请勿将此验证码告知他人！
             </p>
         </div>
         <div class="tips">
-            <p>( 如您已成功注册，请忽略此封邮件, 请勿直接回复本邮件 )</p>
+            <p>( 如您非您本人操作请联系系统管理员, 请勿直接回复本邮件 )</p>
             <br>
             <hr>
         </div>
         <div>
             <p>
-                Greetings from <span class="company" th:text="${companyEn}"/>, your vertification code is: <span
-                    class="code" th:text="${code}"/>, it will expire
-                in 3 minutes,please verify immediately.
+                Dear users, welcome to use <span class="company" th:text="${companyEn}"/>.Your verification code is:<span
+                    class="code" th:text="${code}"/>, valid for 3 minutes, please verify immediately.Do not disclose this verification code to others!
             </p>
         </div>
         <div class="tips">
-            <p>(If you have successfully registered, please ignore this email and do not reply to this email directly )</p>
+            <p>( If you are not your own operation, please contact the system administrator, do not directly reply to this email )</p>
             <br>
         </div>
     </div>

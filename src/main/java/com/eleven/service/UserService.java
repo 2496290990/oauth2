@@ -42,4 +42,24 @@ public interface UserService  {
      * @return
      */
     Result getQrCodeByAccount(String account, HttpServletRequest request, HttpServletResponse response);
+
+    /**
+     * 获取当前登录用户信息
+     * @return
+     */
+    Result getCurrentUser();
+
+    /**
+     * 发送修改密码的验证邮件
+     * @param email
+     * @return
+     */
+    Result sendEmailCode(String email);
+
+    /**
+     * 查询用户信息
+     * @param name
+     * @return
+     */
+    Result queryUser(String name);
 }

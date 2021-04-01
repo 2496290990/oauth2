@@ -103,18 +103,17 @@ public class RegisterServiceImpl implements RegisterService {
         do{
             account = generatorAccount();
         }while (accountList.contains(account));
+
         loginUser.setId(snowFlake.nextId());
         loginUser.setAccount(account);
+        String password = loginUser.getPassword();
+        loginUser.setHxPwd(password);
         String salt = generatorPasswordSalt();
         loginUser.setSalt(salt);
-        String password = loginUser.getPassword();
         //password = password + salt;
         loginUser.setPassword(passwordEncoder.encode(password));
+
         int effectRow = loginUserMapper.insert(loginUser);
-        //==================注册环信用户============
-       /* EasemobRegResult easemobRegResult = easemobUtil.openRegister(loginUser);
-        List<Entities> entities = easemobRegResult.getEntities();*/
-        // TODO: 2021/3/17 插入信息
         return effectRow != 0 ?
                 ResultFactory.success(account) :
                 ResultFactory.failed("注册失败，请联系管理员");
@@ -134,9 +133,13 @@ public class RegisterServiceImpl implements RegisterService {
 
     public static String generatorAccount(){
         String account = "";
+        int flag = 0;
         while(account.length() < 9){
-            int i = (int) (Math.random() * 10);
-            account += i;
+            int random = (int) (Math.random() * 10);
+            if(flag == 0 && random == 0){
+                continue;
+            }
+            account += random;
         }
         return account;
     }

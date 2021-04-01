@@ -31,5 +31,18 @@ public class Oauth2Result  {
     @SerializedName("scope")
     private String scope;
 
+    /**错误类型 */
+    @SerializedName("error")
+    private String error;
+
+    /**错误提示信息 */
+    @SerializedName("error_description")
+    private String errorDescription;
+
+    /** 用户的账号 */
+    private String account;
+
+    /** 环信的密码 */
+    private String hxPwd;
 
 }

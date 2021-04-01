@@ -70,7 +70,8 @@ public class EmailUtil {
         context.setVariable("companyEn", "Alumni");
         String code = getCode();
         context.setVariable("code", code);
-        String process = templateEngine.process("mail.html", context);
+        String template = flag ? "mail.html" : "verify.html";
+        String process = templateEngine.process(template, context);
         MailUtil.send(email.getSendTo(), email.getSubject(), process, null, true, null);
         return code;
     }

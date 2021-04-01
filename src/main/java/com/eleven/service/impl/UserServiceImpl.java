@@ -3,15 +3,21 @@ package com.eleven.service.impl;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import cn.hutool.http.HttpRequest;
+import com.eleven.common.Email;
 import com.eleven.common.Result;
 import com.eleven.common.ResultFactory;
 import com.eleven.entity.LoginUser;
+import com.eleven.entity.VerifyLog;
 import com.eleven.mapper.LoginUserMapper;
 import com.eleven.mapper.UserMapper;
+import com.eleven.mapper.VerifyLogMapper;
 import com.eleven.service.UserService;
+import com.eleven.util.EmailUtil;
 import com.eleven.util.SecurityUtils;
+import com.eleven.util.SnowFlake;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +34,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author zhaojinhui
@@ -43,6 +52,18 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private EmailUtil emailUtil;
+
+    @Autowired
+    private RedisTemplate redisTemplate;
+
+    @Autowired
+    private SnowFlake snowFlake;
+
+    @Autowired
+    private VerifyLogMapper verifyLogMapper;
+
     @Override
     public Result getUser() {
         LoginUser userInfo = SecurityUtils.getUserInfo();
@@ -51,7 +72,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result updateUser(LoginUser loginUser) {
-        userMapper.updateById(loginUser);
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        loginUser.setUpdateTime(LocalDateTime.now());
+        loginUser.setUpdateBy(userInfo.getAccount());
+        userMapper.updateByAccount(loginUser);
         return ResultFactory.success("更新用户信息成功");
     }
 
@@ -101,6 +125,51 @@ public class UserServiceImpl implements UserService {
             return ResultFactory.failed("生成二维码失败，请联系系统管理员");
         }
 
+    }
+
+    @Override
+    public Result getCurrentUser() {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        return ResultFactory.success(userMapper.selectUser(userInfo.getAccount()));
+    }
+
+    @Override
+    public Result sendEmailCode(String emailAddress) {
+        LoginUser loginUser = userMapper.selectUser(emailAddress);
+        if(loginUser != null){
+            Email email = new Email();
+            email.setSendTo(emailAddress);
+            email.setSubject("校友邦验证邮件");
+            String code = "";
+            VerifyLog verifyLog = new VerifyLog();
+
+            try{
+                //获取验证码
+                code = emailUtil.sendEmail(email, false);
+                //将验证码放置到redis中 三分钟内有效
+                redisTemplate.opsForValue().set(emailAddress, code,3, TimeUnit.MINUTES);
+                //将数据存放到数据库中
+                verifyLog.setId(snowFlake.nextId());
+                verifyLog.setCreateTime(LocalDateTime.now());
+                verifyLog.setExpireTime(LocalDateTime.now().plusMinutes(3));
+                verifyLog.setVerifyCode(code);
+                verifyLog.setRegisterAccount(emailAddress);
+                verifyLog.setType(0);
+                verifyLogMapper.insert(verifyLog);
+                return ResultFactory.success(code);
+            }catch(Exception e){
+                e.printStackTrace();
+                return ResultFactory.failed("发送验证邮件失败，请联系系统管理员！");
+            }
+        }
+        return ResultFactory.failed("邮箱暂未注册，请返回注册页面申请账号");
+    }
+
+    @Override
+    public Result queryUser(String name) {
+        //根据用户传入的查询信息查询系统内账户
+        List<LoginUser> loginUserList = userMapper.queryUserForSearch(name);
+        return ResultFactory.success(loginUserList);
     }
 
 }

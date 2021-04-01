@@ -14,6 +14,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * <p>
@@ -61,4 +62,7 @@ public class FriendGroup extends PageParam {
     @TableField("update_time")
     private Date updateTime;
 
+
+    @TableField(exist = false)
+    private List<MyFriend> myFriendList;
 }

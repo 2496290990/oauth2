@@ -32,9 +32,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/getUser")
-    @ApiOperation("测试通过token获取用户信息")
+    @ApiOperation("通过token获取用户信息")
     public Result getCurrentUser(){
-        return ResultFactory.success(SecurityUtils.getUserInfo());
+        return userService.getCurrentUser();
     }
 
     @PutMapping
@@ -53,4 +53,13 @@ public class UserController {
     public Result getQrCodeByAccount(String account, HttpServletRequest request, HttpServletResponse response){
         return userService.getQrCodeByAccount(account,request,response);
     }
+
+    @GetMapping("/queryUser")
+    @ApiOperation("根据条件查询用户信息")
+    public Result queryUser(String name){
+        return userService.queryUser(name);
+    }
+
+
+
 }

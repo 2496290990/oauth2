@@ -47,10 +47,12 @@ public class FriendApplyServiceImpl extends ServiceImpl<FriendApplyMapper, Frien
 
     @Override
     public Result applyToAdd(FriendApply friendApply) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
         LoginUser loginUser = loginUserMapper.queryUserByAccount(friendApply.getFriendId());
         if(loginUser == null){
             return ResultFactory.failed("系统内暂无该账号");
         }
+        friendApply.setProposer(userInfo.getAccount());
         friendApplyMapper.insert(friendApply);
         return ResultFactory.success("验证消息发送成功");
     }
@@ -59,16 +61,16 @@ public class FriendApplyServiceImpl extends ServiceImpl<FriendApplyMapper, Frien
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public Result operationApply(FriendApply friendApply) {
         LoginUser userInfo = SecurityUtils.getUserInfo();
-        friendApply.setUpdateBy(friendApply.getFriendId());
-        friendApplyMapper.updateById(friendApply);
+        friendApply.setUpdateBy(userInfo.getAccount());
+        friendApplyMapper.operationApply(friendApply);
         //查询好友的信息
-        LoginUser friend = loginUserMapper.queryUserByAccount(friendApply.getFriendId());
+        LoginUser friend = loginUserMapper.queryUserByAccount(friendApply.getProposer());
         //如果同意的话,添加一条好友信息
         List<MyFriend> myFriendList = new ArrayList<>();
         if(friendApply.getState() == 1){
             MyFriend myFriend = new MyFriend();
             myFriend.setMyAccount(userInfo.getAccount());
-            myFriend.setFriendAccount(friendApply.getFriendId());
+            myFriend.setFriendAccount(friendApply.getProposer());
             myFriend.setNickname(friend.getUsername());
             myFriend.setParticular("0");
             myFriend.setBlocked("0");

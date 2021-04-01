@@ -33,4 +33,16 @@ public interface LoginUserMapper extends BaseMapper<LoginUser> {
      */
     LoginUser queryUserByAccount(String account);
 
+    /**
+     * 根据登录账户修改用户信息
+     * @param loginUser
+     */
+    void updateByAccount(LoginUser loginUser);
+
+    /**
+     * 用户添加好友，按照查询信息搜索系统内用户
+     * @param name 用户传入的查询条件
+     * @return
+     */
+    List<LoginUser> queryUserForSearch(String name);
 }
