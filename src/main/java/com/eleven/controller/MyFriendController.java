@@ -43,10 +43,16 @@ public class MyFriendController {
         return myFriendService.updateMyFriend(myFriend);
     }
 
-    @GetMapping("queryByAccount")
+    @GetMapping("/queryByAccount")
     @ApiOperation(value = "根据好友账号查询好友信息")
     public Result queryByAccount(String account){
         return myFriendService.queryByAccount(account);
+    }
+
+    @PutMapping("/editFriend")
+    @ApiOperation(value = "编辑好友信息")
+    public Result editFriend(@RequestBody MyFriend myFriend){
+        return myFriendService.editFriend(myFriend);
     }
 }
 

@@ -49,4 +49,19 @@ public interface MyFriendMapper extends BaseMapper<MyFriend> {
      * @param id1
      */
     Integer updateGroupToMy(@Param("oldId")String id,@Param("newId") String newId);
+
+    /**
+     * 查询好友信息
+     * @param account 我的账号
+     * @param account1 好友账号
+     * @return
+     */
+    MyFriend getMyFriendByAccount(@Param("myAccount") String account,@Param("friendAccount") String account1);
+
+    /**
+     * 根据id更新好友信息
+     * @param myFriend
+     * @return
+     */
+    int updateById(MyFriend myFriend);
 }

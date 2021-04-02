@@ -48,6 +48,11 @@
         set group_total = group_total + #{groupTotal}
         where id = #{id}
     </update>
+    <update id="updateGroupTotal">
+        update im_friend_group
+        set group_total = group_total + #{offset}
+        where id = #{groupId};
+    </update>
     <select id="getMyGroup" resultMap="baseMap">
         select
             *

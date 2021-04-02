@@ -40,4 +40,11 @@ public interface MyFriendService extends IService<MyFriend> {
      * @return
      */
     Result queryByAccount(String account);
+
+    /**
+     * 编辑好友信息
+     * @param myFriend
+     * @return
+     */
+    Result editFriend(MyFriend myFriend);
 }

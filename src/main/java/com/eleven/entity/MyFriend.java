@@ -77,5 +77,13 @@ private static final long serialVersionUID=1L;
 
     private String by3;
 
+    @TableField(exist = false)
+    private FriendGroup group;
+
+    @TableField(exist = false)
+    private LoginUser loginUser;
+
+    @TableField(exist = false)
+    private String groupId;
 
 }

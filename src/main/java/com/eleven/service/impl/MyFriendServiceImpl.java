@@ -46,7 +46,6 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
     public Result queryMyFriend() {
         LoginUser userInfo = SecurityUtils.getUserInfo();
         List<FriendGroup> friendGroupList = friendGroupMapper.getGroupByAccount(userInfo.getAccount());
-        //List<MyFriend> myFriendList =  myFriendMapper.queryMyFriendByUserId(userInfo.getAccount());
         return ResultFactory.success(friendGroupList);
     }
 
@@ -100,7 +99,24 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
     @Override
     public Result queryByAccount(String account) {
         LoginUser userInfo = SecurityUtils.getUserInfo();
-        //myFriendMapper.getMyFriendByAccount(userInfo.getAccount(),account);
-        return null;
+        MyFriend myFriend = myFriendMapper.getMyFriendByAccount(userInfo.getAccount(), account);
+        return ResultFactory.success(myFriend);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+    public Result editFriend(MyFriend myFriend) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        myFriend.setFriendGroup(myFriend.getGroupId());
+        int effectRow = myFriendMapper.updateById(myFriend);
+        //获取原来数据库中的数据
+        MyFriend queryFriend = myFriendMapper.getMyFriendByAccount(userInfo.getAccount(), myFriend.getFriendAccount());
+        //两个群组id不一致，更新群组信息
+        String oldGroup = queryFriend.getGroup().getId();
+        if(!oldGroup.equals(myFriend.getGroupId()) && effectRow > 0){
+            friendGroupMapper.updateGroupTotal(oldGroup,-1);
+            friendGroupMapper.updateGroupTotal(myFriend.getGroupId(),1);
+        }
+        return effectRow > 0 ? ResultFactory.success("修改成功"): ResultFactory.failed("修改失败");
     }
 }

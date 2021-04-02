@@ -7,6 +7,7 @@
         <id column="id" property="id" />
         <result column="account" property="account" />
         <result column="password" property="password" />
+        <result column="hx_pwd" property="hxPwd" />
         <result column="salt" property="salt" />
         <result column="sex" property="sex" />
         <result column="phone" property="phone" />
@@ -71,7 +72,7 @@
     </select>
     <select id="selectUser" resultMap="baseMap">
         select
-            id,account,sex,phone,email,account_url,username,intro,birth
+            id,account,sex,phone,email,account_url,username,intro,birth,password,hx_pwd
         from im_user
         where account = #{username}
         or phone = #{username}

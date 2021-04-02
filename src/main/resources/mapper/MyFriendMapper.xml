@@ -1,10 +1,77 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eleven.mapper.MyFriendMapper">
+    <resultMap id="baseMap" type="com.eleven.entity.MyFriend">
+        <id property="id" column="id" />
+        <result property="myAccount" column="my_account" />
+        <result property="friendAccount" column="friend_account" />
+        <result property="particular" column="particular" />
+        <result property="blocked" column="blocked" />
+        <result property="delFlag" column="del_flag" />
+        <result property="createTime" column="create_time" />
+        <result property="updateTime" column="update_time" />
+        <result property="nickname" column="nickname" />
+        <result property="tag" column="tag" />
+        <result property="intro" column="intro" />
+        <result property="friendGroup" column="friend_group" />
+        <association property="group" javaType="com.eleven.entity.FriendGroup">
+            <id property="id" column="fg_id" />
+            <result property="userId" column="fg_user_id" />
+            <result property="nickname" column="fg_nickname" />
+            <result property="groupTotal" column="fg_group_total" />
+        </association>
+        <association property="loginUser" javaType="com.eleven.entity.LoginUser">
+            <id property="id" column="iu_id"/>
+            <result property="username" column="iu_username" />
+            <result property="account" column="iu_account" />
+            <result property="sex" column="iu_sex" />
+            <result property="phone" column="iu_phone" />
+            <result property="email" column="iu_email" />
+            <result property="accountUrl" column="iu_account_url" />
+            <result property="intro" column="iu_intro" />
+            <result property="birth" column="iu_birth" />
+        </association>
+    </resultMap>
     <update id="updateGroupToMy">
         update im_my_friend
         set friend_group = #{newId}
         where friend_group = #{oldId}
+    </update>
+    <update id="updateById">
+        update im_my_friend
+        <set>
+            <if test="myAccount != null and myAccount != ''">
+                my_account = #{myAccount},
+            </if>
+            <if test="friendAccount != null and friendAccount != ''">
+                friend_account = #{friendAccount},
+            </if>
+            <if test="particular != null and particular != ''">
+                particular = #{particular},
+            </if>
+            <if test="blocked != null and blocked != ''">
+                blocked = #{blocked},
+            </if>
+            <if test="delFlag != null and delFlag != ''">
+                del_flag = #{delFlag},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="nickname != null and nickname != ''">
+                nickname = #{nickname},
+            </if>
+            <if test="tag != null and tag != ''">
+                tag = #{tag},
+            </if>
+            <if test="intro != null and intro != ''">
+                intro = #{intro},
+            </if>
+            <if test="friendGroup != null and friendGroup != ''">
+                friend_group = #{friendGroup},
+            </if>
+        </set>
+        where id = #{id}
     </update>
 
     <select id="queryMyFriendByUserId" resultType="com.eleven.entity.MyFriend">
@@ -26,7 +93,28 @@
         from im_user
         where my_account = #{myAccount}
     </select>
-
+    <select id="getMyFriendByAccount" resultMap="baseMap">
+        select
+            tb.*,
+            fg.id as fg_id,
+            user_id as fg_user_id,
+            fg.nickname as fg_nickname,
+            fg.group_total as fg_group_total,
+            iu.id as iu_id,
+            iu.account as iu_account,
+            iu.sex as iu_sex ,
+            iu.phone as iu_phone,
+            iu.email as iu_email,
+            iu.account_url as iu_account_url,
+            iu.username as iu_username,
+            iu.intro as iu_intro,
+            iu.birth as iu_birth
+        from im_my_friend tb
+        left join im_friend_group fg on tb.friend_group = fg.id
+        left join im_user iu on tb.friend_account = iu.account
+        where tb.my_account = #{myAccount}
+        and friend_account = #{friendAccount};
+    </select>
     <insert id="insertBat">
         insert into im_my_friend
             (id,my_account,friend_account,particular,blocked,del_flag,create_time,

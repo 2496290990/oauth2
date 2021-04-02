@@ -3,6 +3,7 @@ package com.eleven.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.eleven.entity.FriendGroup;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -60,4 +61,11 @@ public interface FriendGroupMapper extends BaseMapper<FriendGroup> {
      * @param myGroup
      */
     void updateMyGroupNum(FriendGroup myGroup);
+
+    /**
+     * 同时更新两条好友群组
+     * @param offset 影响行数
+     * @param groupId 群组id
+     */
+    void updateGroupTotal(@Param("groupId")String groupId,@Param("offset")Integer offset);
 }
