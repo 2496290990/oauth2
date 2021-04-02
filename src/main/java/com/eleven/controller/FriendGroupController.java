@@ -46,4 +46,10 @@ public class FriendGroupController {
     public Result updateFriendGroup(@RequestBody FriendGroup friendGroup){
         return friendGroupService.updateFriendGroup(friendGroup);
     }
+
+    @PutMapping("/del")
+    @ApiOperation(value = "删除分组信息")
+    public Result delFriendGroup(FriendGroup friendGroup){
+        return friendGroupService.delFriendGroup(friendGroup);
+    }
 }

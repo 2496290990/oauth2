@@ -1,5 +1,6 @@
 package com.eleven.service.impl;
 
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.extra.qrcode.QrCodeUtil;
 import cn.hutool.extra.qrcode.QrConfig;
 import cn.hutool.http.HttpRequest;
@@ -81,15 +82,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result updateUserPwd(LoginUser loginUser) {
-        LoginUser userInfo = SecurityUtils.getUserInfo();
-        String account = userInfo.getAccount();
-        LoginUser queryUser = userMapper.selectUser(account);
-        if(passwordEncoder.matches(loginUser.getPassword(),queryUser.getPassword())){
-            queryUser.setPassword(passwordEncoder.encode(loginUser.getRePwd()));
-            userMapper.updateById(queryUser);
-            return ResultFactory.success("更新密码成功");
-        }
-        return ResultFactory.failed("输入密码错误");
+
+        LoginUser queryUser = userMapper.selectUser(loginUser.getEmail());
+        queryUser.setPassword(passwordEncoder.encode(loginUser.getPassword()));
+        userMapper.updateById(queryUser);
+        return ResultFactory.success("更新密码成功");
+
     }
 
     @Override
@@ -128,9 +126,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Result getCurrentUser() {
+    public Result getCurrentUser(LoginUser loginUser) {
         LoginUser userInfo = SecurityUtils.getUserInfo();
-        return ResultFactory.success(userMapper.selectUser(userInfo.getAccount()));
+        String account = StrUtil.isEmpty(loginUser.getAccount()) ? userInfo.getAccount() : loginUser.getAccount();
+        return ResultFactory.success(userMapper.selectUser(account));
     }
 
     @Override

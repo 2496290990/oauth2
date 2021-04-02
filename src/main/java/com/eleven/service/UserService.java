@@ -47,7 +47,7 @@ public interface UserService  {
      * 获取当前登录用户信息
      * @return
      */
-    Result getCurrentUser();
+    Result getCurrentUser(LoginUser loginUser);
 
     /**
      * 发送修改密码的验证邮件

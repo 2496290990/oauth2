@@ -8,11 +8,14 @@ import com.eleven.common.ResultFactory;
 import com.eleven.entity.FriendGroup;
 import com.eleven.entity.LoginUser;
 import com.eleven.mapper.FriendGroupMapper;
+import com.eleven.mapper.MyFriendMapper;
 import com.eleven.service.FriendGroupService;
 import com.eleven.util.SecurityUtils;
 import com.eleven.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +30,8 @@ public class FriendGroupServiceImpl extends ServiceImpl<FriendGroupMapper, Frien
 
     @Autowired
     private FriendGroupMapper friendGroupMapper;
+    @Autowired
+    private MyFriendMapper myFriendMapper;
 
     @Autowired
     private SnowFlake snowFlake;
@@ -67,12 +72,28 @@ public class FriendGroupServiceImpl extends ServiceImpl<FriendGroupMapper, Frien
 
     @Override
     public Result queryMyGroupList(FriendGroup friendGroup) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        friendGroup.setUserId(userInfo.getAccount());
         List<FriendGroup> friendGroupList = friendGroupMapper.getGroupByLike(friendGroup);
-        return ResultFactory.success(friendGroup);
+        return ResultFactory.success(friendGroupList);
     }
 
     @Override
     public Result updateFriendGroup(FriendGroup friendGroup) {
         return ResultFactory.success(friendGroupMapper.updateById(friendGroup));
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    public Result delFriendGroup(FriendGroup friendGroup) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        //删除好友分组
+        friendGroup.setDelFlag("0");
+        friendGroupMapper.updateById(friendGroup);
+        FriendGroup myGroup = friendGroupMapper.queryMyGroup(userInfo.getAccount());
+        Integer effectRow = myFriendMapper.updateGroupToMy(friendGroup.getId(), myGroup.getId());
+        myGroup.setGroupTotal(effectRow);
+        friendGroupMapper.updateMyGroupNum(myGroup);
+        return null;
     }
 }

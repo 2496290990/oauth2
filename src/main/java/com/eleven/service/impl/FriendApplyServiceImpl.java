@@ -7,9 +7,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.eleven.common.Result;
 import com.eleven.common.ResultFactory;
 import com.eleven.entity.FriendApply;
+import com.eleven.entity.FriendGroup;
 import com.eleven.entity.LoginUser;
 import com.eleven.entity.MyFriend;
 import com.eleven.mapper.FriendApplyMapper;
+import com.eleven.mapper.FriendGroupMapper;
 import com.eleven.mapper.LoginUserMapper;
 import com.eleven.mapper.MyFriendMapper;
 import com.eleven.service.FriendApplyService;
@@ -43,6 +45,9 @@ public class FriendApplyServiceImpl extends ServiceImpl<FriendApplyMapper, Frien
     private MyFriendMapper myFriendMapper;
 
     @Autowired
+    private FriendGroupMapper friendGroupMapper;
+
+    @Autowired
     private LoginUserMapper loginUserMapper;
 
     @Override
@@ -62,24 +67,30 @@ public class FriendApplyServiceImpl extends ServiceImpl<FriendApplyMapper, Frien
     public Result operationApply(FriendApply friendApply) {
         LoginUser userInfo = SecurityUtils.getUserInfo();
         friendApply.setUpdateBy(userInfo.getAccount());
+        friendApply.setFriendId(userInfo.getAccount());
         friendApplyMapper.operationApply(friendApply);
         //查询好友的信息
         LoginUser friend = loginUserMapper.queryUserByAccount(friendApply.getProposer());
         //如果同意的话,添加一条好友信息
         List<MyFriend> myFriendList = new ArrayList<>();
         if(friendApply.getState() == 1){
+            FriendGroup myGroup = friendGroupMapper.queryMyGroup(userInfo.getAccount());
             MyFriend myFriend = new MyFriend();
             myFriend.setMyAccount(userInfo.getAccount());
             myFriend.setFriendAccount(friendApply.getProposer());
             myFriend.setNickname(friend.getUsername());
             myFriend.setParticular("0");
             myFriend.setBlocked("0");
+            myFriend.setFriendGroup(myGroup.getId());
             MyFriend hisFriend = new MyFriend();
+
+            FriendGroup hisGroup = friendGroupMapper.queryMyGroup(friendApply.getProposer());
             hisFriend.setMyAccount(friend.getAccount());
             hisFriend.setFriendAccount(userInfo.getAccount());
             hisFriend.setNickname(userInfo.getUsername());
             hisFriend.setBlocked("0");
             hisFriend.setParticular("0");
+            hisFriend.setFriendGroup(hisGroup.getId());
             Collections.addAll(myFriendList, myFriend,hisFriend);
         }
         if(CollUtil.isNotEmpty(myFriendList)) {

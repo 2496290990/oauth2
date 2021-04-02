@@ -39,4 +39,11 @@ public interface FriendGroupService extends IService<FriendGroup> {
      * @return
      */
     Result updateFriendGroup(FriendGroup friendGroup);
+
+    /**
+     * 删除好友分组
+     * @param friendGroup
+     * @return
+     */
+    Result delFriendGroup(FriendGroup friendGroup);
 }

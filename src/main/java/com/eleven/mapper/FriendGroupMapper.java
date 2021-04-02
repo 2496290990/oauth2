@@ -42,4 +42,22 @@ public interface FriendGroupMapper extends BaseMapper<FriendGroup> {
      * @return
      */
     List<FriendGroup> getGroupByAccount(String account);
+
+    /**
+     * 查询我的好友这个群组
+     * @param account
+     * @return
+     */
+    FriendGroup queryMyGroup(String account);
+
+    /**
+     * 更新我的好友分组
+     */
+    void updateMyGroup();
+
+    /**
+     * 更新数据
+     * @param myGroup
+     */
+    void updateMyGroupNum(FriendGroup myGroup);
 }

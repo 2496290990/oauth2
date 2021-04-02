@@ -2,8 +2,10 @@ package com.eleven.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import com.eleven.common.*;
+import com.eleven.entity.FriendGroup;
 import com.eleven.entity.LoginUser;
 import com.eleven.entity.VerifyLog;
+import com.eleven.mapper.FriendGroupMapper;
 import com.eleven.mapper.LoginUserMapper;
 import com.eleven.mapper.VerifyLogMapper;
 import com.eleven.service.RegisterService;
@@ -20,6 +22,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -42,6 +45,8 @@ public class RegisterServiceImpl implements RegisterService {
     private final VerifyLogMapper verifyLogMapper;
 
     private final LoginUserMapper loginUserMapper;
+
+    private final FriendGroupMapper friendGroupMapper;
 
     private final BCryptPasswordEncoder passwordEncoder;
 
@@ -110,9 +115,22 @@ public class RegisterServiceImpl implements RegisterService {
         loginUser.setHxPwd(password);
         String salt = generatorPasswordSalt();
         loginUser.setSalt(salt);
-        //password = password + salt;
         loginUser.setPassword(passwordEncoder.encode(password));
 
+        List<FriendGroup> friendGroupList = new ArrayList<>();
+        FriendGroup friendGroup = new FriendGroup();
+        friendGroup.setId(snowFlake.nextId());
+        friendGroup.setUserId(account);
+        friendGroup.setNickname("我的好友");
+        friendGroup.setGroupTotal(0);
+        friendGroupList.add(friendGroup);
+        FriendGroup friendGroup2 = new FriendGroup();
+        friendGroup2.setId(snowFlake.nextId());
+        friendGroup2.setUserId(account);
+        friendGroup2.setNickname("黑名单");
+        friendGroup2.setGroupTotal(0);
+        friendGroupList.add(friendGroup2);
+        friendGroupMapper.insertBat(friendGroupList);
         int effectRow = loginUserMapper.insert(loginUser);
         return effectRow != 0 ?
                 ResultFactory.success(account) :

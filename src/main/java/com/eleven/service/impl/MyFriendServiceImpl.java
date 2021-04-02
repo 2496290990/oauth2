@@ -59,7 +59,7 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
         if(queryFriend == null) {
             //获取当前登录人的好友分组信息
             FriendGroup group = new FriendGroup();
-            group.setGroupName("我的好友");
+            group.setNickname("我的好友");
             List<FriendGroup> friendGroupList = friendGroupMapper.getGroupByLike(group);
             FriendGroup defaultGroup = friendGroupList.get(0);
             //批量插入好友关系
@@ -95,5 +95,12 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
     @Override
     public Result updateMyFriend(MyFriend myFriend) {
         return ResultFactory.success(myFriendMapper.updateById(myFriend));
+    }
+
+    @Override
+    public Result queryByAccount(String account) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        //myFriendMapper.getMyFriendByAccount(userInfo.getAccount(),account);
+        return null;
     }
 }

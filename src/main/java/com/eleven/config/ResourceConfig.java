@@ -39,7 +39,8 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                         "/common/**",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
-                        "/v2/**")
+                        "/v2/**",
+                        "/user/updatePwd")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

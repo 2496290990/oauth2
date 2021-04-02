@@ -6,39 +6,48 @@
     <resultMap id="baseMap" type="com.eleven.entity.FriendGroup">
         <id column="id" property="id" />
         <result column="user_id" property="userId" />
-        <result column="group_name" property="groupName" />
+        <result column="nickname" property="nickname" />
         <result column="create_time" property="createTime" />
         <result column="group_total" property="groupTotal" />
         <result column="update_time" property="updateTime" />
 
         <collection property="myFriendList" ofType="com.eleven.entity.MyFriend">
-            <id column="id" property="id" />
-            <result column="my_account" property="myAccount" />
-            <result column="friend_account" property="friendAccount" />
-            <result column="particular" property="particular" />
-            <result column="blocked" property="blocked" />
-            <result column="del_flag" property="delFlag" />
-            <result column="create_time" property="createTime" />
-            <result column="update_time" property="updateTime" />
-            <result column="nickname" property="nickname" />
-            <result column="tag" property="tag" />
-            <result column="intro" property="intro" />
-            <result column="friend_group" property="friendGroup" />
+            <id column="mf_id" property="id" />
+            <result column="mf_my_account" property="myAccount" />
+            <result column="mf_friend_account" property="friendAccount" />
+            <result column="mf_particular" property="particular" />
+            <result column="mf_blocked" property="blocked" />
+            <result column="mf_del_flag" property="delFlag" />
+            <result column="mf_create_time" property="createTime" />
+            <result column="mf_update_time" property="updateTime" />
+            <result column="mf_nickname" property="nickname" />
+            <result column="mf_tag" property="tag" />
+            <result column="mf_intro" property="intro" />
+            <result column="mf_friend_group" property="friendGroup" />
         </collection>
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, user_id AS userId, group_name AS groupName, create_time AS createTime, group_total AS groupTotal, update_time AS updateTime
+        id, user_id AS userId, nickname AS nickname, create_time AS createTime, group_total AS groupTotal, update_time AS updateTime
     </sql>
     <insert id="insertBat">
         insert into im_friend_group
-            (id,user_id,group_name,create_time,group_total)
+            (id,user_id,nickname,create_time,group_total,update_by,del_flag,update_time,create_by)
         values
         <foreach collection="list" separator="," item="group" >
-            (#{group.id},#{group.userId},#{group.groupName},#{group.createTime},#{group.groupTotal})
+            (#{group.id},#{group.userId},#{group.nickname},#{group.createTime},#{group.groupTotal},
+            #{group.updateBy},#{group.delFlag},#{group.updateTime},#{group.createBy})
         </foreach>
     </insert>
+    <update id="updateMyGroup">
+
+    </update>
+    <update id="updateMyGroupNum">
+        update im_friend_group
+        set group_total = group_total + #{groupTotal}
+        where id = #{id}
+    </update>
     <select id="getMyGroup" resultMap="baseMap">
         select
             *
@@ -50,22 +59,39 @@
             *
         from im_friend_group
         <where>
+            del_flag = '1'
             <include refid="queryLike" />
-            or user_id = 'admin'
         </where>
 
     </select>
     <select id="getGroupByAccount" resultMap="baseMap">
         select
             tb.*,
-            mf.*
+            mf.id as mf_id,
+            mf.my_account as mf_my_account,
+            mf.friend_account as mf_friend_account,
+            mf.particular as mf_particular,
+            mf.blocked as mf_blocked,
+            mf.del_flag as mf_del_flag,
+            mf.nickname as mf_nickname,
+            mf.create_time as mf_create_time,
+            mf.update_time as mf_update_time,
+            mf.tag as mf_tag,
+            mf.intro as mf_intro,
+            mf.friend_group as mf_friend_group
         from im_friend_group tb
         left join im_my_friend mf on tb.id = mf.friend_group
         where tb.user_id = #{account}
     </select>
+    <select id="queryMyGroup" resultType="com.eleven.entity.FriendGroup">
+        select *
+        from im_friend_group
+        where nickname = '我的好友'
+        and user_id = #{account}
+    </select>
     <sql id="queryLike">
-        <if test="groupName != null">
-            AND group_name like '%${groupName}%'
+        <if test="nickname != null">
+            AND nickname like '%${nickname}%'
         </if>
         <if test="userId != null">
             AND user_id = #{userId}

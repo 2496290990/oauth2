@@ -69,9 +69,9 @@
             account
         from im_user
     </select>
-    <select id="selectUser" resultType="com.eleven.entity.LoginUser">
+    <select id="selectUser" resultMap="baseMap">
         select
-            *
+            id,account,sex,phone,email,account_url,username,intro,birth
         from im_user
         where account = #{username}
         or phone = #{username}

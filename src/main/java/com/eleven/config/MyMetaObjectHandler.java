@@ -23,6 +23,8 @@ public class MyMetaObjectHandler implements MetaObjectHandler {
         this.setFieldValByName("createBy",createBy , metaObject);
         this.setFieldValByName("createTime", LocalDateTime.now(), metaObject);
         this.setFieldValByName("delFlag", "1", metaObject);
+        this.setFieldValByName("updateBy", createBy, metaObject);
+        this.setFieldValByName("updateTime", LocalDateTime.now(), metaObject);
     }
 
     @Override

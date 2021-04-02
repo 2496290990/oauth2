@@ -42,4 +42,11 @@ public interface MyFriendMapper extends BaseMapper<MyFriend> {
      * @return
      */
     List<MyFriend> queryMyFriend(String account);
+
+    /**
+     * 将已经删除的分组变更到我的好友下
+     * @param id
+     * @param id1
+     */
+    Integer updateGroupToMy(@Param("oldId")String id,@Param("newId") String newId);
 }

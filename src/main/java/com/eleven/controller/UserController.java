@@ -32,9 +32,9 @@ public class UserController {
     private UserService userService;
 
     @GetMapping("/getUser")
-    @ApiOperation("通过token获取用户信息")
-    public Result getCurrentUser(){
-        return userService.getCurrentUser();
+    @ApiOperation("获取用户信息")
+    public Result getCurrentUser(LoginUser loginUser){
+        return userService.getCurrentUser(loginUser);
     }
 
     @PutMapping

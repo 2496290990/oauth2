@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import java.io.Serializable;
@@ -28,7 +29,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @TableName("im_friend_group")
-public class FriendGroup extends PageParam {
+public class FriendGroup extends CommonEntity {
 
     private static final long serialVersionUID = 1L;
 
@@ -44,24 +45,14 @@ public class FriendGroup extends PageParam {
     /**
      * 分组名称
      */
-    @TableField("group_name")
-    private String groupName;
-    /**
-     * 创建时间
-     */
-    @TableField(fill = FieldFill.INSERT,value = "create_time")
-    private Date createTime;
+    @TableField("nickname")
+    private String nickname;
+
     /**
      * 分组人数
      */
     @TableField("group_total")
     private Integer groupTotal;
-    /**
-     * 更新时间
-     */
-    @TableField("update_time")
-    private Date updateTime;
-
 
     @TableField(exist = false)
     private List<MyFriend> myFriendList;
