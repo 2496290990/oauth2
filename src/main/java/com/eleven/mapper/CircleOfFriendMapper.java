@@ -35,4 +35,11 @@ public interface CircleOfFriendMapper extends BaseMapper<CircleOfFriend> {
      * @return
      */
     List<CircleOfFriend> getCircleList(@Param("list") List<String> accountList);
+
+    /**
+     * 根据id更新内容
+     * @param circleOfFriend
+     * @return
+     */
+    int updateById(CircleOfFriend circleOfFriend);
 }

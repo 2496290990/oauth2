@@ -28,6 +28,21 @@
             <result property="accountUrl" column="iu_account_url" /> <!--发表人昵称-->
         </collection>
     </resultMap>
+    <update id="updateById">
+        update im_circle_of_friend
+        <set>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+            <if test="text != null">
+                text = #{text},
+            </if>
+            <if test="delFlag != null">
+                del_flag = #{delFlag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
 
     <select id="queryLast20Circles" resultMap="baseMap">
         select
@@ -68,7 +83,6 @@
             </if>
             <if test="utterer != null">
                 and utterer = #{utterer}
-
             </if>
         </where>
 
@@ -95,10 +109,13 @@
         left join im_user iu on icr.review_id = iu.account
         left join im_user iuu on icr.reply = iuu.account
         left join im_user iuuu on tb.utterer = iuuu.account
-        where utterer in
-        <foreach collection="list" item="account" open="(" separator="," close=")">
-            #{account}
-        </foreach>
+        <where>
+            tb.del_flag = '1'
+            and utterer in
+            <foreach collection="list" item="account" open="(" separator="," close=")">
+                #{account}
+            </foreach>
+        </where>
         order by tb.create_time DESC, icr.create_time ASC
     </select>
 </mapper>

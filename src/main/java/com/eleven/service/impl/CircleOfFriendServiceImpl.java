@@ -146,6 +146,13 @@ public class CircleOfFriendServiceImpl extends ServiceImpl<CircleOfFriendMapper,
                 ResultFactory.failed("发表失败，请联系管理员");
     }
 
+    @Override
+    public Result updateCircleById(CircleOfFriend circleOfFriend) {
+        int effect = friendMapper.updateById(circleOfFriend);
+        return effect > 0 ?
+                ResultFactory.success("删除成功") :
+                ResultFactory.failed("删除失败，请联系管理员");
+    }
 
 
 }

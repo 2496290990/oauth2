@@ -52,4 +52,11 @@ public interface CircleOfFriendService extends IService<CircleOfFriend> {
      * @return
      */
     Result publishCircle(CircleOfFriend circleOfFriend);
+
+    /**
+     * 根据id修改朋友圈
+     * @param circleOfFriend
+     * @return
+     */
+    Result updateCircleById(CircleOfFriend circleOfFriend);
 }

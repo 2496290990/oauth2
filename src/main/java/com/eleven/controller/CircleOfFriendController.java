@@ -62,5 +62,9 @@ public class CircleOfFriendController {
         return  friendService.getCircleList();
     }
 
+    @PutMapping("/update")
+    public Result updateById(@RequestBody CircleOfFriend circleOfFriend){
+        return friendService.updateCircleById(circleOfFriend);
+    }
 }
 

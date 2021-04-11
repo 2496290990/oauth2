@@ -29,7 +29,7 @@ import java.util.List;
 @Accessors(chain = true)
 @TableName("im_circle_of_friend")
 @ApiModel(value="CircleOfFriend对象", description="动态记录表")
-public class CircleOfFriend extends PageParam implements Serializable {
+public class CircleOfFriend extends CommonEntity implements Serializable {
 
 private static final long serialVersionUID=1L;
 
@@ -41,18 +41,6 @@ private static final long serialVersionUID=1L;
 
     @ApiModelProperty(value = "发表的文字内容")
     private String text;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty(value = "0已删除 1正常")
-    @TableLogic
-    private String delFlag;
 
     private String by1;
 
