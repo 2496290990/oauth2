@@ -64,6 +64,10 @@ private static final long serialVersionUID=1L;
 
     private String by5;
 
+    /** 图片集合 */
+    @TableField(exist = false)
+    private List<String> urlList;
+
     /** 朋友圈文件集合 */
     @TableField(exist = false)
     private List<CircleOss> circleOssList;
@@ -75,4 +79,9 @@ private static final long serialVersionUID=1L;
     @TableField(exist = false)
     private List<ReviewOss> reviewOssList;
 
+    @TableField(exist = false)
+    private String creator;
+
+    @TableField(exist = false)
+    private String accountUrl;
 }

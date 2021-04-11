@@ -24,8 +24,15 @@ public interface CircleOfFriendMapper extends BaseMapper<CircleOfFriend> {
 
     /**
      * 分页查询自己的朋友圈信息
-     * @param account 账号信息
+     * @param friend 账号信息
      * @return
      */
     List<CircleOfFriend> queryOwnCircle(CircleOfFriend friend);
+
+    /**
+     * 查询朋友圈信息
+     * @param accountList 查询的账号列表
+     * @return
+     */
+    List<CircleOfFriend> getCircleList(@Param("list") List<String> accountList);
 }

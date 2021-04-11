@@ -7,10 +7,7 @@ import com.eleven.service.CircleOfFriendService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -46,8 +43,23 @@ public class CircleOfFriendController {
 
     @PostMapping
     @ApiOperation(value = "发朋友圈")
-    public Result insertNew(CircleOfFriend circleOfFriend, List<MultipartFile> files) throws IOException {
+    public Result insertNew(List<MultipartFile> files,CircleOfFriend circleOfFriend) throws IOException {
         return friendService.insertNew(circleOfFriend,files);
+    }
+
+    @PostMapping("/publish")
+    @ApiOperation("先上传文件后发表的方式")
+    public Result publishCircle(@RequestBody CircleOfFriend circleOfFriend){
+        return friendService.publishCircle(circleOfFriend);
+    }
+
+    /**
+     * 获取朋友圈列表
+     * @return
+     */
+    @GetMapping("/list")
+    public Result getCircleList(){
+        return  friendService.getCircleList();
     }
 
 }

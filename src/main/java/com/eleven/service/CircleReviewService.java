@@ -22,7 +22,7 @@ public interface CircleReviewService extends IService<CircleReview> {
      * @date   2021年3月14日17:37:49
      * @author zjh
      */
-    Result insertReview(CircleReview circleReview, List<MultipartFile> files);
+    Result insertReview(CircleReview circleReview);
 
     /**
      * 根据id查询评论

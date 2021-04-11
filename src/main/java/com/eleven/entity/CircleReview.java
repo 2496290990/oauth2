@@ -1,5 +1,6 @@
 package com.eleven.entity;
 
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.eleven.common.PageParam;
@@ -19,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @TableName("im_circle_review")
-public class CircleReview extends PageParam {
+public class CircleReview extends CommonEntity {
 
     private static final Long serialVersionUID = 1L;
 
@@ -38,29 +39,21 @@ public class CircleReview extends PageParam {
     /** 父级id */
     private String parentId;
 
-    /** 创建时间 */
-    private LocalDateTime createTime;
-    /** 创建人 */
-    private String createBy;
-
-    /** 更新时间 */
-    private LocalDateTime updateTime;
-
-    /** 更新人 */
-    private String updateBy;
-
-    /** 删除标记 */
-    private String delFlag;
-
     /** 备用字段 */
-    private String by1;
     private String by2;
     private String by3;
     private String by4;
 
+    /** 发表人 */
     @TableField(exist = false)
-    private List<CircleReview> child;
+    private String creator;
 
+    /** 回复的人 */
+    private String reply;
+
+    /** 用户头像 */
     @TableField(exist = false)
-    private List<ReviewOss> reviewOssList;
+    private String accountUrl;
+
+
 }

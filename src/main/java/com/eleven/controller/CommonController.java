@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author zhaojinhui
@@ -34,5 +35,11 @@ public class CommonController {
     @ApiOperation("公共上传文件接口")
     public Result uploadImg(MultipartFile file) throws IOException {
         return commonService.uploadImg(file);
+    }
+
+    @PostMapping("/uploadBat")
+    @ApiOperation("批量上传图片")
+    public Result uploadImgList(List<MultipartFile> files) throws IOException{
+        return commonService.uploadImgList(files);
     }
 }

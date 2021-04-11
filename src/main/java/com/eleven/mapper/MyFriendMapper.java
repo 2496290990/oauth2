@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.eleven.entity.MyFriend;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -64,4 +65,11 @@ public interface MyFriendMapper extends BaseMapper<MyFriend> {
      * @return
      */
     int updateById(MyFriend myFriend);
+
+    /**
+     * 根据登录人获取好友账号集合
+     * @param account 登录人账号
+     * @return
+     */
+    List<MyFriend> getMyFriendList(String account);
 }

@@ -6,10 +6,11 @@
         <id column="id" property="id" /><!---->
         <result column="utterer" property="utterer" /><!---->
         <result column="text" property="text" /><!---->
-        <result column="createTime" property="createTime" /><!---->
-        <result column="updateTime" property="updateTime" /><!---->
-        <result column="delFlag" property="delFlag" /><!---->
-
+        <result column="create_time" property="createTime" /><!---->
+        <result column="update_time" property="updateTime" /><!---->
+        <result column="del_flag" property="delFlag" /><!---->
+        <result column="tb_username" property="creator" />
+        <result column="tb_account_url" property="accountUrl" />
         <collection property="circleOssList" ofType="com.eleven.entity.CircleOss">
             <id property="id" column="ico_id" />
             <result property="circleId" column="ico_circle_id"/>
@@ -21,13 +22,10 @@
             <result property="circleId" column="icr_circle_id"/>
             <result property="reviewId" column="icr_review_id" />
             <result property="reviewContent" column="icr_review_content" />
-            <result property="parentId" column="icr_parent_id" />
-        </collection>
-        <collection property="reviewOssList" ofType="com.eleven.entity.ReviewOss">
-            <id property="id" column="iro_id"/>
-            <result property="reviewId" column="iro_review_id" />
-            <result property="url" column="iro_url"/>
-            <result property="sort" column="iro_sort"/>
+            <result property="createTime" column="icr_create_time" />
+            <result property="creator" column="creator" /> <!--发表人昵称-->
+            <result property="reply" column="reply" /> <!--回复谁-->
+            <result property="accountUrl" column="iu_account_url" /> <!--发表人昵称-->
         </collection>
     </resultMap>
 
@@ -74,5 +72,33 @@
             </if>
         </where>
 
+    </select>
+    <select id="getCircleList" resultMap="baseMap">
+        select tb.*,
+            iuuu.username as tb_username,
+            iuuu.account_url as tb_account_url,
+            ico.id             as ico_id,
+            ico.circle_id      as ico_circle_id,
+            ico.sort           as ico_sort,
+            ico.url            as ico_url,
+            icr.id             as icr_id,
+            icr.circle_id      as icr_circle_id,
+            icr.review_id      as icr_review_id,
+            icr.review_content as icr_review_content,
+            icr.create_time    as icr_create_time,
+            iu.account_url     as iu_account_url,
+            iu.username        as creator,
+            iuu.username       as reply
+        from im_circle_of_friend tb
+        left join im_circle_oss ico on tb.id = ico.circle_id
+        left join im_circle_review icr on tb.id = icr.circle_id
+        left join im_user iu on icr.review_id = iu.account
+        left join im_user iuu on icr.reply = iuu.account
+        left join im_user iuuu on tb.utterer = iuuu.account
+        where utterer in
+        <foreach collection="list" item="account" open="(" separator="," close=")">
+            #{account}
+        </foreach>
+        order by tb.create_time DESC, icr.create_time ASC
     </select>
 </mapper>

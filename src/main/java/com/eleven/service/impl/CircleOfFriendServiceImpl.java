@@ -1,6 +1,7 @@
 package com.eleven.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.eleven.common.Result;
@@ -15,6 +16,8 @@ import com.eleven.util.SecurityUtils;
 import com.eleven.util.SnowFlake;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -62,6 +65,7 @@ public class CircleOfFriendServiceImpl extends ServiceImpl<CircleOfFriendMapper,
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public Result insertNew(CircleOfFriend circleOfFriend, List<MultipartFile> files) throws IOException {
         SnowFlake snowFlake = SnowFlake.getSnowFlake();
         circleOfFriend.setId(snowFlake.nextId());
@@ -80,7 +84,9 @@ public class CircleOfFriendServiceImpl extends ServiceImpl<CircleOfFriendMapper,
                 oss.setSort(i);
                 ossList.add(oss);
             }
-            ossMapper.insertBat(ossList);
+            if(CollUtil.isNotEmpty(ossList)) {
+                ossMapper.insertBat(ossList);
+            }
         }
 
         return ResultFactory.success(ossList);
@@ -89,72 +95,57 @@ public class CircleOfFriendServiceImpl extends ServiceImpl<CircleOfFriendMapper,
     @Override
     public Result queryOwnCircle(CircleOfFriend friend) {
         LoginUser userInfo = SecurityUtils.getUserInfo();
-        friend.setUtterer(userInfo.getAccount());
-        List<CircleOfFriend> circleOfFriends = friendMapper.queryOwnCircle(friend);
-        return ResultFactory.success(getComputerList(circleOfFriends));
+        List<String> accounts = new ArrayList<>();
+        accounts.add(userInfo.getAccount());
+        List<CircleOfFriend> circleOfFriends = friendMapper.getCircleList(accounts);
+        return ResultFactory.success(circleOfFriends);
     }
 
-    /**
-     * 将评论返回成树状结构并且将图片放置在评论中
-     * @param list
-     * @return
-     */
-    private List<CircleOfFriend> getComputerList(List<CircleOfFriend> list){
-        List<CircleOfFriend> result = new ArrayList<>();
-        for (CircleOfFriend friend : list) {
-            result.add(getComputedFriend(friend));
-        }
-        return result;
+    @Override
+    public Result getCircleList() {
+        //获取当前登录人账号以及好有账号
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        String account = userInfo.getAccount();
+        List<String> accountList = new ArrayList<>();
+        List<MyFriend> myFriendList = myFriendMapper.getMyFriendList(account);
+        List<String> friendAccountList = myFriendList.stream().map(m -> m.getFriendAccount()).collect(Collectors.toList());
+        accountList.add(account);
+        accountList.addAll(friendAccountList);
+
+        List<CircleOfFriend> circleList = friendMapper.getCircleList(accountList);
+        return ResultFactory.success(circleList);
     }
 
-    private CircleOfFriend getComputedFriend(CircleOfFriend friend){
-        //拿到所有的评论集合
-        List<CircleReview> reviewList = friend.getCircleReviewList();
-        //拿到所有的评论文件集合
-        List<ReviewOss> reviewOssList = friend.getReviewOssList();
-        //按照评论的id分组
-        Map<String, List<ReviewOss>> ossMap = reviewOssList.stream()
-                .collect(Collectors.groupingBy(ReviewOss::getReviewId));
-        //将文件放到评论里边
-        if(CollUtil.isNotEmpty(reviewList)) {
-            reviewList = reviewList.stream()
-                    .map(m -> {
-                        m.setReviewOssList(ossMap.get(m.getId()));
-                        return m;
-                    }).collect(Collectors.toList());
-            List<CircleReview> topList = new ArrayList<>();
-            for (Iterator<CircleReview> iterator = reviewList.iterator(); iterator.hasNext(); ) {
-                CircleReview review = iterator.next();
-                if (review.getParentId() == null) {
-                    topList.add(review);
-                    iterator.remove();
-                }
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
+    public Result publishCircle(CircleOfFriend circleOfFriend) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        SnowFlake snowFlake = SnowFlake.getSnowFlake();
+        circleOfFriend.setUtterer(userInfo.getAccount());
+        circleOfFriend.setId(snowFlake.nextId());
+        int insert = friendMapper.insert(circleOfFriend);
+        List<String> urlList = circleOfFriend.getUrlList();
+        if(CollUtil.isNotEmpty(urlList)){
+            List<CircleOss> ossList = new ArrayList<>();
+            CircleOss oss = null;
+            int i = 0;
+            for (String url : urlList) {
+                oss = new CircleOss();
+                oss.setId(snowFlake.nextId());
+                oss.setCircleId(circleOfFriend.getId());
+                oss.setSort(i++);
+                oss.setUrl(url);
+                ossList.add(oss);
             }
-
-            for (CircleReview review : topList) {
-                setChild(review, reviewList);
+            if(CollUtil.isNotEmpty(ossList)){
+                ossMapper.insertBat(ossList);
             }
-            friend.setReviewOssList(null);
-            friend.setCircleReviewList(topList);
         }
-        return friend;
+        return insert > 0 ?
+                ResultFactory.success("发表成功") :
+                ResultFactory.failed("发表失败，请联系管理员");
     }
 
-    //设置子集
-    private void setChild(CircleReview review,List<CircleReview> list){
-        List<CircleReview> secondList = new ArrayList<>();
-        for(Iterator<CircleReview> iterator = list.iterator();iterator.hasNext();){
-            CircleReview next = iterator.next();
-            if(next.getParentId().equals(review.getId())){
-                secondList.add(next);
-                iterator.remove();
-            }
-        }
-        review.setChild(secondList);
-        if(CollUtil.isNotEmpty(list)){
-            for (CircleReview circleReview : secondList) {
-                setChild(circleReview, list);
-            }
-        }
-    }
+
+
 }

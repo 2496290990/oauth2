@@ -49,5 +49,19 @@ public class ChatGroupController {
     public Result delGroup(@RequestBody ChatGroup chatGroup){
         return chatGroupService.delGroup(chatGroup);
     }
+
+    @GetMapping("/query")
+    public Result queryGroupByLike(ChatGroup chatGroup){
+        return chatGroupService.queryGroupByLike(chatGroup);
+    }
+
+    /**
+     * 查询我的群组
+     * @return
+     */
+    @GetMapping("/queryMyGroup")
+    public Result queryMyGroup(){
+        return chatGroupService.queryMyGroup();
+    }
 }
 

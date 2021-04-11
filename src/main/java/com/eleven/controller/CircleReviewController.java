@@ -31,8 +31,8 @@ public class CircleReviewController {
      */
     @PostMapping("/insert")
     @ApiOperation(value = "新增评论")
-    public Result insertCircleReview(CircleReview circleReview, List<MultipartFile>files){
-        return circleReviewService.insertReview(circleReview,files);
+    public Result insertCircleReview(@RequestBody CircleReview circleReview){
+        return circleReviewService.insertReview(circleReview);
     }
 
     @GetMapping("/query")

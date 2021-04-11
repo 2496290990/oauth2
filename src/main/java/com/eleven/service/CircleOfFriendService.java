@@ -39,4 +39,17 @@ public interface CircleOfFriendService extends IService<CircleOfFriend> {
      * @return
      */
     Result queryOwnCircle(CircleOfFriend friend);
+
+    /**
+     * 获取朋友圈集合
+     * @return
+     */
+    Result getCircleList();
+
+    /**
+     * 先上传图片后发表
+     * @param circleOfFriend
+     * @return
+     */
+    Result publishCircle(CircleOfFriend circleOfFriend);
 }

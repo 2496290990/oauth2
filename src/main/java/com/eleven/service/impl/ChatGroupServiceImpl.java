@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 /**
  * <p>
  * 聊天群组表 服务实现类
@@ -35,11 +37,11 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
         LoginUser userInfo = SecurityUtils.getUserInfo();
         chatGroup.setId(snowFlake.nextId());
         chatGroup.setCreateId(userInfo.getId());
+        chatGroup.setOwnerId(userInfo.getId());
         int insert = chatGroupMapper.insert(chatGroup);
-        if(insert > 0){
-            return ResultFactory.success(chatGroup.getId());
-        }
-        return ResultFactory.failed("创建群组失败");
+        return  insert > 0 ?
+            ResultFactory.success("创建成功，您的群号是：" + chatGroup.getHxGroupId()) :
+            ResultFactory.failed("创建群组失败");
     }
 
     @Override
@@ -54,9 +56,23 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
     }
 
     @Override
-    @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public Result delGroup(ChatGroup chatGroup) {
+        return null;
+    }
 
+    @Override
+    public Result queryGroupByLike(ChatGroup chatGroup) {
+        List<ChatGroup> groupList = chatGroupMapper.queryGroupByLike(chatGroup);
+        return ResultFactory.success(groupList);
+    }
+
+    /**
+     * 查询我的群组
+     *
+     * @return
+     */
+    @Override
+    public Result queryMyGroup() {
         return null;
     }
 }

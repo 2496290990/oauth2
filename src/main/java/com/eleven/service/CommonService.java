@@ -4,6 +4,7 @@ import com.eleven.common.Result;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * @author zhaojinhui
@@ -18,4 +19,11 @@ public interface CommonService {
      * @return
      */
     Result uploadImg(MultipartFile file) throws IOException;
+
+    /**
+     * 批量上传
+     * @param files
+     * @return
+     */
+    Result uploadImgList(List<MultipartFile> files) throws IOException;
 }

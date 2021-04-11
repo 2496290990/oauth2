@@ -1,5 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.eleven.mapper.ChatGroupMapper">
+    <resultMap id="baseMap" type="com.eleven.entity.ChatGroup">
+        <id property="id" column="id"/>
+        <result property="createId" column="create_id" />
+        <result property="groupName" column="group_name" />
+        <result property="groupIntro" column="group_intro" />
+        <result property="groupUrl" column="group_url" />
+        <result property="createTime" column="create_time" />
+        <result property="groupTag" column="group_tag" />
+        <result property="updateTime" column="update_time" />
+        <result property="ownerId" column="owner_id" />
+        <result property="level" column="level" />
+        <result property="hxGroupId" column="hx_group_id" />
+        <result property="groupType" column="group_type" />
+        <result property="applyState" column="apply_state" />
+        <result property="delFalg" column="del_flag" />
+    </resultMap>
+    <sql id="baseQuery">
+        select id,
+           create_id,
+           group_name,
+           group_intro,
+           group_url,
+           create_time,
+           group_tag,
+           update_time,
+           owner_id,
+           level,
+           hx_group_id,
+           group_type,
+           apply_state,
+           by4,
+           by5,
+           by6,
+           del_flag
+from im_chat_group
+    </sql>
 
+    <select id="queryGroupByLike" resultType="com.eleven.entity.ChatGroup">
+        select *
+        from im_chat_group
+        where group_intro like '%${queryLike}%'
+        or group_name like '%${queryLike}%'
+        or hx_group_id like '%${queryLike}%'
+    </select>
 </mapper>

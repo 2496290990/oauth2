@@ -42,4 +42,17 @@ public interface ChatGroupService extends IService<ChatGroup> {
      * @return
      */
     Result delGroup(ChatGroup group);
+
+    /**
+     * 根据查询条件查询群组
+     * @param chatGroup 查询条件
+     * @return
+     */
+    Result queryGroupByLike(ChatGroup chatGroup);
+
+    /**
+     * 查询我的群组
+     * @return
+     */
+    Result queryMyGroup();
 }

@@ -26,7 +26,7 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("im_chat_group")
 @ApiModel(value="ChatGroup对象", description="聊天群组表")
-public class ChatGroup extends PageParam implements Serializable {
+public class ChatGroup extends CommonEntity implements Serializable {
 
 private static final long serialVersionUID=1L;
 
@@ -45,16 +45,8 @@ private static final long serialVersionUID=1L;
     @ApiModelProperty(value = "群头像")
     private String groupUrl;
 
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
     @ApiModelProperty(value = "群标签")
     private String groupTag;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
 
     @ApiModelProperty(value = "群主id")
     private String ownerId;
@@ -62,17 +54,24 @@ private static final long serialVersionUID=1L;
     @ApiModelProperty(value = "群等级")
     private Integer level;
 
-    private String by1;
+    /** 环信群组id */
+    private String hxGroupId;
 
-    private String by2;
+    /** 群组类型 0私有1共有 */
+    private Integer groupType;
 
-    private String by3;
+    /** 审核状态 0审核 1公开 */
+    private String applyState;
 
     private String by4;
 
     private String by5;
 
     private String by6;
+
+    /** 查询条件 */
+    @TableField(exist = false)
+    private String queryLike;
 
 
 }

@@ -1,6 +1,7 @@
 package com.eleven.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.eleven.common.Result;
 import com.eleven.common.ResultFactory;
@@ -52,32 +53,16 @@ public class CircleReviewServiceImpl extends ServiceImpl<CircleReviewMapper, Cir
      */
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
-    public Result insertReview(CircleReview circleReview, List<MultipartFile>files) {
+    public Result insertReview(CircleReview circleReview) {
+        if(StrUtil.isBlank(circleReview.getReviewContent())){
+            return ResultFactory.failed("回复内容不能为空");
+        }
         LoginUser userInfo = SecurityUtils.getUserInfo();
         circleReview.setReviewId(userInfo.getAccount());
         circleReview.setId(snowFlake.nextId());
         circleReview.setDelFlag("1");
         int insert = reviewMapper.insert(circleReview);
-        List<ReviewOss> ossList = new ArrayList<>();
-        ReviewOss oss = null;
-        int i = 0;
-        for (MultipartFile file : files){
-            oss = new ReviewOss();
-            try {
-                oss.setReviewId(circleReview.getId());
-                Result result = commonService.uploadImg(file);
-                ImgUploadOss img = (ImgUploadOss) result.getData();
-                oss.setSort(i++);
-                oss.setUrl(img.getUrl());
-                ossList.add(oss);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        if(CollUtil.isNotEmpty(ossList)){
-            ossMapper.insertBat(ossList);
-        }
-        return ResultFactory.success(insert);
+        return ResultFactory.success("发表评论成功");
     }
 
     @Override

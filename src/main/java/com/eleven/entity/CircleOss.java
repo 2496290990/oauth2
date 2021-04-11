@@ -27,9 +27,9 @@ import java.time.LocalDateTime;
 @Accessors(chain = true)
 @TableName("im_circle_oss")
 @ApiModel(value="CircleOss对象", description="朋友圈文件表")
-public class CircleOss extends PageParam implements Serializable {
+public class CircleOss extends CommonEntity implements Serializable {
 
-private static final long serialVersionUID=1L;
+    private static final long serialVersionUID=1L;
 
     @ApiModelProperty(value = "主键id")
     private String id;
@@ -42,18 +42,6 @@ private static final long serialVersionUID=1L;
 
     @ApiModelProperty(value = "文件url")
     private String url;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private LocalDateTime createTime;
-
-    @ApiModelProperty(value = "0删除1正常")
-    @TableLogic
-    private String delFlag;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private LocalDateTime updateTime;
 
     private String by1;
 

@@ -115,6 +115,14 @@
         where tb.my_account = #{myAccount}
         and friend_account = #{friendAccount};
     </select>
+    <select id="getMyFriendList" resultMap="baseMap">
+        select
+            distinct *
+        from im_my_friend
+        where my_account = #{account}
+        and blocked = '0'
+        and del_flag = '1'
+    </select>
     <insert id="insertBat">
         insert into im_my_friend
             (id,my_account,friend_account,particular,blocked,del_flag,create_time,
