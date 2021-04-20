@@ -73,6 +73,14 @@
         </set>
         where id = #{id}
     </update>
+    <update id="updateToMyFriendGroup">
+        update im_my_friend
+        set friend_group = #{id}
+        where friend_group in
+        <foreach collection="list" item="group" open="(" separator="," close=")">
+            #{group.id}
+        </foreach>
+    </update>
 
     <select id="queryMyFriendByUserId" resultType="com.eleven.entity.MyFriend">
         select *

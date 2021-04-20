@@ -46,4 +46,11 @@ public interface FriendGroupService extends IService<FriendGroup> {
      * @return
      */
     Result delFriendGroup(FriendGroup friendGroup);
+
+    /**
+     * 批量更新好友群组
+     * @param friendGroupList 批量更新的列表
+     * @return
+     */
+    Result updateFriendGroupList(List<FriendGroup> friendGroupList);
 }

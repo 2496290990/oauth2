@@ -53,6 +53,27 @@
         set group_total = group_total + #{offset}
         where id = #{groupId};
     </update>
+    <update id="updateBat">
+        insert into im_friend_group
+        (id,nickname)
+        value
+        <foreach collection="list" item="group"  separator="," >
+            (#{group.id},#{group.nickname})
+        </foreach>
+        on duplicate key update
+        nickname=values(nickname)
+    </update>
+    <update id="delBat">
+        update im_friend_group
+        set del_flag = '0',
+        update_time = now(),
+        update_by = #{account}
+        where id in
+        <foreach collection="list" item="delGroup" open="(" separator="," close=")">
+            #{delGroup.id}
+        </foreach>
+    </update>
+
     <select id="getMyGroup" resultMap="baseMap">
         select
             *
@@ -87,6 +108,7 @@
         from im_friend_group tb
         left join im_my_friend mf on tb.id = mf.friend_group
         where tb.user_id = #{account}
+        and tb.del_flag = '1'
     </select>
     <select id="queryMyGroup" resultType="com.eleven.entity.FriendGroup">
         select *

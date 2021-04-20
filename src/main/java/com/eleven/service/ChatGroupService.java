@@ -54,5 +54,12 @@ public interface ChatGroupService extends IService<ChatGroup> {
      * 查询我的群组
      * @return
      */
-    Result queryMyGroup();
+    Result queryMyGroup(ChatGroup chatGroup);
+
+    /**
+     * 更新我的好友分组
+     * @param chatGroup
+     * @return
+     */
+    Result updateMyGroup(ChatGroup chatGroup);
 }

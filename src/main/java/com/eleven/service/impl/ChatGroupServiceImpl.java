@@ -72,7 +72,14 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
      * @return
      */
     @Override
-    public Result queryMyGroup() {
+    public Result queryMyGroup(ChatGroup chatGroup) {
+        LoginUser user = SecurityUtils.getUserInfo();
+
+        return null;
+    }
+
+    @Override
+    public Result updateMyGroup(ChatGroup chatGroup) {
         return null;
     }
 }

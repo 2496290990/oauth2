@@ -54,14 +54,18 @@ public class ChatGroupController {
     public Result queryGroupByLike(ChatGroup chatGroup){
         return chatGroupService.queryGroupByLike(chatGroup);
     }
-
     /**
      * 查询我的群组
      * @return
      */
     @GetMapping("/queryMyGroup")
-    public Result queryMyGroup(){
-        return chatGroupService.queryMyGroup();
+    public Result queryMyGroup(ChatGroup chatGroup){
+        return chatGroupService.queryMyGroup(chatGroup);
+    }
+
+    @PutMapping("/update")
+    public Result updateMyGroup(@RequestBody ChatGroup chatGroup){
+        return chatGroupService.updateMyGroup(chatGroup);
     }
 }
 

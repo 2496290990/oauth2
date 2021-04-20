@@ -2,6 +2,7 @@ package com.eleven.service.impl;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.lang.Snowflake;
+import cn.hutool.core.util.StrUtil;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.eleven.common.Result;
 import com.eleven.common.ResultFactory;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author zhaojinhui
@@ -35,6 +37,7 @@ public class FriendGroupServiceImpl extends ServiceImpl<FriendGroupMapper, Frien
 
     @Autowired
     private SnowFlake snowFlake;
+
 
     /**
      * 创建好友分组
@@ -93,7 +96,57 @@ public class FriendGroupServiceImpl extends ServiceImpl<FriendGroupMapper, Frien
         FriendGroup myGroup = friendGroupMapper.queryMyGroup(userInfo.getAccount());
         Integer effectRow = myFriendMapper.updateGroupToMy(friendGroup.getId(), myGroup.getId());
         myGroup.setGroupTotal(effectRow);
+        List<FriendGroup> list = new ArrayList<>();
+        list.add(friendGroup);
+        myFriendMapper.updateToMyFriendGroup(list, myGroup.getId());
         friendGroupMapper.updateMyGroupNum(myGroup);
-        return null;
+        return ResultFactory.success("删除成功");
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
+    public Result updateFriendGroupList(List<FriendGroup> friendGroupList) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        FriendGroup friendGroup = new FriendGroup();
+        friendGroup.setUserId(userInfo.getAccount());
+        List<FriendGroup> queryList = friendGroupMapper.getGroupByLike(friendGroup);
+
+        //获取新创建的群组信息
+        List<FriendGroup> createList = friendGroupList.stream()
+                .filter(group -> StrUtil.isBlank(group.getId()))
+                .collect(Collectors.toList());
+        if(CollUtil.isNotEmpty(createList)) {
+            createList.stream()
+                    .forEach(group -> {
+                        group.setId(snowFlake.nextId());
+                        group.setUserId(userInfo.getAccount());
+                    });
+            friendGroupMapper.insertBat(createList);
+        }
+        //将新创建的群组剔除剩下所有需要更新的群组信息
+        friendGroupList.removeAll(createList);
+        if(CollUtil.isNotEmpty(friendGroupList)) {
+            friendGroupMapper.updateBat(friendGroupList);
+        }
+        //获取传入的分组id列表
+        List<String> idList = friendGroupList.stream()
+                .map(group -> group.getId())
+                .collect(Collectors.toList());
+        //获取已经删除的群组信息
+        String id = "";
+        for (FriendGroup group : queryList) {
+            if(group.getNickname().equals("我的好友")){
+                id = group.getId();
+                break;
+            }
+        }
+        List<FriendGroup> delList = queryList.stream()
+                .filter(query -> !idList.contains(query.getId()))
+                .collect(Collectors.toList());
+        if(CollUtil.isNotEmpty(delList)) {
+            myFriendMapper.updateToMyFriendGroup(delList, id);
+            friendGroupMapper.delBat(delList,userInfo.getAccount());
+        }
+        return ResultFactory.success("更新成功");
     }
 }

@@ -47,6 +47,12 @@ public class FriendGroupController {
         return friendGroupService.updateFriendGroup(friendGroup);
     }
 
+    @PutMapping("/updateList")
+    @ApiOperation(value = "批量更新群组信息")
+    public Result updateFriendBat(@RequestBody List<FriendGroup> friendGroupList){
+        return friendGroupService.updateFriendGroupList(friendGroupList);
+    }
+
     @PutMapping("/del")
     @ApiOperation(value = "删除分组信息")
     public Result delFriendGroup(FriendGroup friendGroup){

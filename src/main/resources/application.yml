@@ -6,7 +6,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/zs_im?serverTimezone=UTC
     username: root
-    password: root
+    password: dream
     driver-class-name: com.mysql.cj.jdbc.Driver
   servlet:
     multipart:

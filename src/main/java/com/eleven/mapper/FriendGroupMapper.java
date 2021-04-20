@@ -68,4 +68,17 @@ public interface FriendGroupMapper extends BaseMapper<FriendGroup> {
      * @param groupId 群组id
      */
     void updateGroupTotal(@Param("groupId")String groupId,@Param("offset")Integer offset);
+
+    /**
+     * 批量多字段更新
+     * @param friendGroupList
+     */
+    void updateBat(List<FriendGroup> friendGroupList);
+
+    /**
+     * 批量删除
+     * @param delList
+     * @param account
+     */
+    void delBat(@Param("list") List<FriendGroup> delList, @Param("account") String account);
 }

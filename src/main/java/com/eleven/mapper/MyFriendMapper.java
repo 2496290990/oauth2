@@ -1,6 +1,7 @@
 package com.eleven.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.eleven.entity.FriendGroup;
 import com.eleven.entity.MyFriend;
 import org.apache.ibatis.annotations.Param;
 
@@ -72,4 +73,11 @@ public interface MyFriendMapper extends BaseMapper<MyFriend> {
      * @return
      */
     List<MyFriend> getMyFriendList(String account);
+
+    /**
+     * 将删除的好友分组内的好友移送到我的好友分组
+     * @param delList
+     * @param id
+     */
+    void updateToMyFriendGroup(@Param("list") List<FriendGroup> delList, @Param("id")String id);
 }
