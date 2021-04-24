@@ -122,6 +122,8 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
 
     @Override
     public Result joinBlock(MyFriend myFriend) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        MyFriend queryFriend = myFriendMapper.getMyFriendByAccount(userInfo.getAccount(),myFriend.getFriendAccount());
         return null;
     }
 }

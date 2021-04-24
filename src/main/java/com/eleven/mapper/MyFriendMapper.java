@@ -58,7 +58,7 @@ public interface MyFriendMapper extends BaseMapper<MyFriend> {
      * @param account1 好友账号
      * @return
      */
-    MyFriend getMyFriendByAccount(@Param("myAccount") String account,@Param("friendAccount") String account1);
+    MyFriend getMyFriendByAccount(@Param("myAccount") String myAccount,@Param("friendAccount") String friendAccount);
 
     /**
      * 根据id更新好友信息
