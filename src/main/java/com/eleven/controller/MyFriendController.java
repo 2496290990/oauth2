@@ -54,5 +54,11 @@ public class MyFriendController {
     public Result editFriend(@RequestBody MyFriend myFriend){
         return myFriendService.editFriend(myFriend);
     }
+
+    @PutMapping("/joinBlock")
+    @ApiOperation("将好友加入小黑屋")
+    public Result joinBlock(@RequestBody MyFriend myFriend){
+        return myFriendService.joinBlock(myFriend);
+    }
 }
 

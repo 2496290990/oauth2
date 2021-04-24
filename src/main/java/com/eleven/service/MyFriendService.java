@@ -47,4 +47,11 @@ public interface MyFriendService extends IService<MyFriend> {
      * @return
      */
     Result editFriend(MyFriend myFriend);
+
+    /**
+     * 加入小黑屋
+     * @param myFriend
+     * @return
+     */
+    Result joinBlock(MyFriend myFriend);
 }

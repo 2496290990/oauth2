@@ -119,4 +119,9 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
         }
         return effectRow > 0 ? ResultFactory.success("修改成功"): ResultFactory.failed("修改失败");
     }
+
+    @Override
+    public Result joinBlock(MyFriend myFriend) {
+        return null;
+    }
 }
