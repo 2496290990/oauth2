@@ -44,12 +44,8 @@ public interface FriendGroupMapper extends BaseMapper<FriendGroup> {
      */
     List<FriendGroup> getGroupByAccount(String account);
 
-    /**
-     * 查询我的好友这个群组
-     * @param account
-     * @return
-     */
-    FriendGroup queryMyGroup(String account);
+
+    FriendGroup queryMyGroupByLike(@Param("nickname") String nickname,@Param("account") String account);
 
     /**
      * 更新我的好友分组
@@ -81,4 +77,6 @@ public interface FriendGroupMapper extends BaseMapper<FriendGroup> {
      * @param account
      */
     void delBat(@Param("list") List<FriendGroup> delList, @Param("account") String account);
+
+
 }

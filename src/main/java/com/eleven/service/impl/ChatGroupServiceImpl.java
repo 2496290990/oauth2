@@ -57,7 +57,10 @@ public class ChatGroupServiceImpl extends ServiceImpl<ChatGroupMapper, ChatGroup
 
     @Override
     public Result delGroup(ChatGroup chatGroup) {
-        return null;
+        int effect = chatGroupMapper.delByHxGroupId(chatGroup);
+        return effect > 0 ?
+                ResultFactory.success("操作成功") :
+                ResultFactory.failed("操作失败");
     }
 
     @Override

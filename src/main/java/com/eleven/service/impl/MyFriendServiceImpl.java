@@ -91,10 +91,7 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
 
     }
 
-    @Override
-    public Result updateMyFriend(MyFriend myFriend) {
-        return ResultFactory.success(myFriendMapper.updateById(myFriend));
-    }
+
 
     @Override
     public Result queryByAccount(String account) {
@@ -124,6 +121,46 @@ public class MyFriendServiceImpl extends ServiceImpl<MyFriendMapper, MyFriend> i
     public Result joinBlock(MyFriend myFriend) {
         LoginUser userInfo = SecurityUtils.getUserInfo();
         MyFriend queryFriend = myFriendMapper.getMyFriendByAccount(userInfo.getAccount(),myFriend.getFriendAccount());
-        return null;
+        FriendGroup blockGroup = friendGroupMapper.queryMyGroupByLike("黑名单",userInfo.getAccount());
+        if(blockGroup == null){
+            return ResultFactory.failed("历史遗留数据，请先创建黑名单分组");
+        }
+        queryFriend.setFriendGroup(blockGroup.getId());
+        int effect = myFriendMapper.updateById(queryFriend);
+        return effect > 0 ?
+                ResultFactory.success("操作成功") :
+                ResultFactory.failed("操作失败");
+    }
+
+    @Override
+    public Result removeBlock(MyFriend myFriend) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        MyFriend queryFriend = myFriendMapper.getMyFriendByAccount(userInfo.getAccount(),myFriend.getFriendAccount());
+        FriendGroup blockGroup = friendGroupMapper.queryMyGroupByLike("我的好友",userInfo.getAccount());
+        if(blockGroup == null){
+            return ResultFactory.failed("历史遗留数据，请先创建我的好友分组");
+        }
+        queryFriend.setFriendGroup(blockGroup.getId());
+        int effect = myFriendMapper.updateById(queryFriend);
+        return effect > 0 ?
+                ResultFactory.success("操作成功") :
+                ResultFactory.failed("操作失败");
+    }
+
+    @Override
+    public Result getBlockStatus(String account) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        List<String> blockAccountList = myFriendMapper.getBlockAccountList(userInfo.getAccount());
+        return ResultFactory.success(blockAccountList.contains(account));
+    }
+
+    @Override
+    public Result updateMyFriendByAccount(MyFriend myFriend) {
+        LoginUser userInfo = SecurityUtils.getUserInfo();
+        myFriend.setMyAccount(userInfo.getAccount());
+        int effect = myFriendMapper.updateByAccount(myFriend);
+        return effect > 0 ?
+                ResultFactory.success("操作成功") :
+                ResultFactory.failed("操作失败");
     }
 }

@@ -37,12 +37,6 @@ public class MyFriendController {
         return myFriendService.addFriend(myFriend);
     }
 
-    @PutMapping
-    @ApiOperation(value = "更新好友关系")
-    public Result updateMyFriend(@RequestBody MyFriend myFriend){
-        return myFriendService.updateMyFriend(myFriend);
-    }
-
     @GetMapping("/queryByAccount")
     @ApiOperation(value = "根据好友账号查询好友信息")
     public Result queryByAccount(String account){
@@ -59,6 +53,24 @@ public class MyFriendController {
     @ApiOperation("将好友加入小黑屋")
     public Result joinBlock(@RequestBody MyFriend myFriend){
         return myFriendService.joinBlock(myFriend);
+    }
+
+    @PutMapping("/removeBlock")
+    @ApiOperation("移出黑名单")
+    public Result removeBlock(@RequestBody MyFriend myFriend){
+        return myFriendService.removeBlock(myFriend);
+    }
+
+    @GetMapping("/block/{account}")
+    @ApiOperation("获取好友的黑名单状态")
+    public Result getBlockStatus(@PathVariable("account")String account){
+        return myFriendService.getBlockStatus(account);
+    }
+
+    @PutMapping
+    @ApiOperation("修改好友分组信息")
+    public Result updateMyFriend(@RequestBody MyFriend myFriend){
+        return myFriendService.updateMyFriendByAccount(myFriend);
     }
 }
 

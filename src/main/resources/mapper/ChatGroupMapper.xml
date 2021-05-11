@@ -37,6 +37,10 @@
            del_flag
 from im_chat_group
     </sql>
+    <delete id="delByHxGroupId">
+        delete from im_chat_group
+        where hx_group_id = #{hxGroupId}
+    </delete>
 
     <select id="queryGroupByLike" resultType="com.eleven.entity.ChatGroup">
         select *

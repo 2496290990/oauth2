@@ -21,4 +21,6 @@ public interface ChatGroupMapper extends BaseMapper<ChatGroup> {
      * @return
      */
     List<ChatGroup> queryGroupByLike(ChatGroup chatGroup);
+
+    int delByHxGroupId(ChatGroup chatGroup);
 }

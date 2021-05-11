@@ -109,13 +109,22 @@
         left join im_my_friend mf on tb.id = mf.friend_group
         where tb.user_id = #{account}
         and tb.del_flag = '1'
+        and mf.del_flag = '1'
     </select>
-    <select id="queryMyGroup" resultType="com.eleven.entity.FriendGroup">
+    <select id="queryMyGroupByLike" resultMap="baseMap">
         select *
         from im_friend_group
-        where nickname = '我的好友'
-        and user_id = #{account}
+        <where>
+            <if test="nickname != null and nickname != ''">
+                and nickname = #{nickname}
+            </if>
+            <if test="account != null and account != ''">
+                and user_id = #{account}
+            </if>
+        </where>
     </select>
+
+
     <sql id="queryLike">
         <if test="nickname != null">
             AND nickname like '%${nickname}%'

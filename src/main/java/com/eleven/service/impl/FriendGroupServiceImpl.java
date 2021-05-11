@@ -93,7 +93,7 @@ public class FriendGroupServiceImpl extends ServiceImpl<FriendGroupMapper, Frien
         //删除好友分组
         friendGroup.setDelFlag("0");
         friendGroupMapper.updateById(friendGroup);
-        FriendGroup myGroup = friendGroupMapper.queryMyGroup(userInfo.getAccount());
+        FriendGroup myGroup = friendGroupMapper.queryMyGroupByLike("我的好友",userInfo.getAccount());
         Integer effectRow = myFriendMapper.updateGroupToMy(friendGroup.getId(), myGroup.getId());
         myGroup.setGroupTotal(effectRow);
         List<FriendGroup> list = new ArrayList<>();

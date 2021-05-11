@@ -81,6 +81,37 @@
             #{group.id}
         </foreach>
     </update>
+    <update id="updateByAccount">
+        update im_my_friend
+        <set>
+            <if test="delFlag != null">
+                del_flag = #{delFlag},
+            </if>
+            <if test="particular != null">
+                particular = #{particular},
+            </if>
+            <if test="blocked != null">
+                blocked = #{blocked},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+            <if test="tag != null">
+                tag = #{tag},
+            </if>
+            <if test="intro != null">
+                intro = #{intro},
+            </if>
+            <if test="friendGroup != null">
+                friend_group = #{friendGroup},
+            </if>
+            <if test="updateTime != null">
+                update_time = #{updateTime},
+            </if>
+        </set>
+        where my_account = #{myAccount}
+        and friend_account = #{friendAccount}
+    </update>
 
     <select id="queryMyFriendByUserId" resultType="com.eleven.entity.MyFriend">
         select *
@@ -130,6 +161,13 @@
         where my_account = #{account}
         and blocked = '0'
         and del_flag = '1'
+    </select>
+    <select id="getBlockAccountList" resultType="java.lang.String">
+        select distinct tb.friend_account
+        from im_my_friend tb
+        left join im_friend_group fg on tb.friend_group = fg.id
+        where fg.nickname = '黑名单'
+        and tb.my_account = #{account}
     </select>
     <insert id="insertBat">
         insert into im_my_friend

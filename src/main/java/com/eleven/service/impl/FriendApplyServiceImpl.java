@@ -74,7 +74,7 @@ public class FriendApplyServiceImpl extends ServiceImpl<FriendApplyMapper, Frien
         //如果同意的话,添加一条好友信息
         List<MyFriend> myFriendList = new ArrayList<>();
         if(friendApply.getState() == 1){
-            FriendGroup myGroup = friendGroupMapper.queryMyGroup(userInfo.getAccount());
+            FriendGroup myGroup = friendGroupMapper.queryMyGroupByLike("我的好友",userInfo.getAccount());
             MyFriend myFriend = new MyFriend();
             myFriend.setMyAccount(userInfo.getAccount());
             myFriend.setFriendAccount(friendApply.getProposer());
@@ -84,7 +84,7 @@ public class FriendApplyServiceImpl extends ServiceImpl<FriendApplyMapper, Frien
             myFriend.setFriendGroup(myGroup.getId());
             MyFriend hisFriend = new MyFriend();
 
-            FriendGroup hisGroup = friendGroupMapper.queryMyGroup(friendApply.getProposer());
+            FriendGroup hisGroup = friendGroupMapper.queryMyGroupByLike("我的好友",friendApply.getProposer());
             hisFriend.setMyAccount(friend.getAccount());
             hisFriend.setFriendAccount(userInfo.getAccount());
             hisFriend.setNickname(userInfo.getUsername());

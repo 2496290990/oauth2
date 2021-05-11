@@ -28,13 +28,6 @@ public interface MyFriendService extends IService<MyFriend> {
     Result addFriend(MyFriend myFriend);
 
     /**
-     * 更新
-     * @param myFriend
-     * @return
-     */
-    Result updateMyFriend(MyFriend myFriend);
-
-    /**
      * 根据好友账号查询好友信息
      * @param account
      * @return
@@ -54,4 +47,25 @@ public interface MyFriendService extends IService<MyFriend> {
      * @return
      */
     Result joinBlock(MyFriend myFriend);
+
+    /**
+     * 移出黑名单
+     * @param myFriend
+     * @return
+     */
+    Result removeBlock(MyFriend myFriend);
+
+    /**
+     *
+     * @param account
+     * @return
+     */
+    Result getBlockStatus(String account);
+
+    /**
+     * 根据两个人的账号修改数据
+     * @param myFriend
+     * @return
+     */
+    Result updateMyFriendByAccount(MyFriend myFriend);
 }

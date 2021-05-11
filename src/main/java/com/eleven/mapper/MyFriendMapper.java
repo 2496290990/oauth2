@@ -80,4 +80,16 @@ public interface MyFriendMapper extends BaseMapper<MyFriend> {
      * @param id
      */
     void updateToMyFriendGroup(@Param("list") List<FriendGroup> delList, @Param("id")String id);
+
+    /**
+     * 获取我的黑名单列表
+     * @param account
+     * @return
+     */
+    List<String> getBlockAccountList(String account);
+
+    /**
+     * 根据两个人的账号修改
+     */
+    int updateByAccount(MyFriend myFriend);
 }
